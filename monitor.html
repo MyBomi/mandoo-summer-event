@@ -5,42 +5,42 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>진행자 모니터 — 저주받은 별장</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Special+Elite&family=EB+Garamond:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0c0608; --panel:#170c10; --parchment:#e9ddc2; --parchment-dim:#a99a7c;
-    --brass:#9c7a3c; --brass-bright:#d1a94f; --sage:#3d5240; --sage-bright:#5c7c60;
-    --blood:#6b1420; --blood-bright:#9c2233;
+    --bg:#0b0e09; --panel:#141810; --parchment:#cfc79f; --parchment-dim:#948c6c;
+    --brass:#6f7d52; --brass-bright:#9ab06a; --sage:#3f5561; --sage-bright:#5c7986;
+    --blood:#8a3b2a; --blood-bright:#b6543a;
   }
   *{box-sizing:border-box;}
   body{
     margin:0; min-height:100vh; padding:40px 24px;
-    background:radial-gradient(ellipse at 50% -10%, #241017 0%, var(--bg) 55%), var(--bg);
-    color:var(--parchment); font-family:'EB Garamond', serif;
+    background:radial-gradient(ellipse at 50% -10%, #171f14 0%, var(--bg) 55%), var(--bg);
+    color:var(--parchment); font-family:'Nanum Myeongjo', serif;
   }
   .wrap{ max-width:920px; margin:0 auto;}
-  .eyebrow{ font-family:'Special Elite', monospace; letter-spacing:.18em; text-transform:uppercase; font-size:12px; color:var(--brass-bright); opacity:.85; margin:0 0 8px;}
-  h1{ font-family:'Cinzel Decorative', serif; font-size:clamp(24px,4vw,34px); margin:0 0 4px;}
+  .eyebrow{ font-family:'Nanum Gothic', sans-serif; letter-spacing:.16em; text-transform:uppercase; font-size:12px; color:var(--brass-bright); opacity:.85; margin:0 0 8px;}
+  h1{ font-family:'Nanum Myeongjo', serif; font-weight:800; font-size:clamp(24px,4vw,34px); margin:0 0 4px;}
   .sub{ color:var(--parchment-dim); margin:0 0 30px; font-size:16px;}
   .config-warning{
     display:none; border:1px solid var(--blood); background:rgba(107,20,32,.15);
-    padding:16px 18px; margin-bottom:24px; font-family:'Special Elite', monospace; font-size:13px; color:var(--blood-bright);
+    padding:16px 18px; margin-bottom:24px; font-family:'Nanum Gothic', sans-serif; font-size:13px; color:var(--blood-bright);
   }
   table{ width:100%; border-collapse:collapse; }
   th{
-    text-align:left; font-family:'Special Elite', monospace; font-size:12px; letter-spacing:.08em;
+    text-align:left; font-family:'Nanum Gothic', sans-serif; font-size:12px; letter-spacing:.08em;
     text-transform:uppercase; color:var(--brass-bright); padding:10px 14px; border-bottom:1px solid rgba(156,122,60,.4);
   }
   td{ padding:14px; border-bottom:1px solid rgba(156,122,60,.15); font-size:16px; vertical-align:middle;}
   tr.done td{ color:var(--sage-bright);}
-  .team-name{ font-family:'Special Elite', monospace; font-size:15px; letter-spacing:.06em;}
+  .team-name{ font-family:'Nanum Gothic', sans-serif; font-size:15px; letter-spacing:.06em;}
   .bar-track{ background:rgba(0,0,0,.4); height:8px; width:180px; position:relative; border:1px solid rgba(156,122,60,.3);}
   .bar-fill{ position:absolute; inset:0; width:0%; background:linear-gradient(90deg, var(--brass), var(--brass-bright)); transition:width .4s;}
   .bar-fill.done{ background:linear-gradient(90deg, var(--sage), var(--sage-bright));}
-  .stage-label{ font-family:'Special Elite', monospace; font-size:13px; color:var(--parchment-dim); white-space:nowrap;}
-  .updated{ font-family:'Special Elite', monospace; font-size:12px; color:var(--parchment-dim); opacity:.75;}
+  .stage-label{ font-family:'Nanum Gothic', sans-serif; font-size:13px; color:var(--parchment-dim); white-space:nowrap;}
+  .updated{ font-family:'Nanum Gothic', sans-serif; font-size:12px; color:var(--parchment-dim); opacity:.75;}
   .badge-done{
-    font-family:'Special Elite', monospace; font-size:11px; letter-spacing:.08em; color:var(--sage-bright);
+    font-family:'Nanum Gothic', sans-serif; font-size:11px; letter-spacing:.08em; color:var(--sage-bright);
     border:1px solid var(--sage); padding:2px 8px;
   }
 </style>
