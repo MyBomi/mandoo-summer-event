@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>만두의 여름나기</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Nanum+Gothic:wght@400;700&family=Nanum+Brush+Script&family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;700&family=Yeon+Sung&display=swap" rel="stylesheet">
 <style>
   :root{
     --hbg:#0b0e09;
@@ -29,7 +30,7 @@
       radial-gradient(ellipse at 80% 100%, rgba(111,125,82,.18) 0%, transparent 50%),
       var(--hbg);
     color:var(--paper);
-    font-family:'Nanum Myeongjo', serif;
+    font-family:'Gowun Batang', serif;
     min-height:100vh;
     display:flex;
     align-items:center;
@@ -66,51 +67,86 @@
   .stage{ animation: reveal .7s ease both; }
   @keyframes reveal{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
 
-  .frame{
-    position:relative; z-index:10;
-    max-width:640px; width:100%;
-    background:linear-gradient(180deg, var(--hbg-alt), #0e1210);
-    border:1px solid rgba(111,125,82,.3);
-    box-shadow:0 0 0 1px rgba(0,0,0,.5), 0 30px 90px rgba(0,0,0,.7), inset 0 0 70px rgba(0,0,0,.55);
-    padding:44px 40px;
+  /* 프레임 배경을 피와 곰팡이 질감으로 교체, 진동 애니메이션 추가 */
+  .frame {
+    position: relative; z-index: 10;
+    max-width: 640px; width: 100%;
+    background: radial-gradient(circle at 50% 20%, #1a0808 0%, #0e1210 80%), #0b0e09;
+    border: 1px solid rgba(138, 59, 42, 0.4);
+    box-shadow: 0 0 30px rgba(138, 59, 42, 0.15), 0 30px 90px rgba(0, 0, 0, 0.85), inset 0 0 80px rgba(0, 0, 0, 0.7);
+    padding: 44px 40px;
+  }
+
+  /* 괴담 분위기 붉은 자국(핏자국 느낌) 배경 오버레이 */
+  .frame::before {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at top right, rgba(138,59,42,0.15), transparent 60%);
+    pointer-events: none;
+  }
+
+  /* 제목(H1)에 피처럼 지직거리는 레드 글리치 텍스트 효과 */
+  h1 {
+    font-family: 'Gowun Batang', serif; font-weight: 800; font-size: clamp(24px, 4.6vw, 34px);
+    line-height: 1.25; margin: 0 0 18px; color: var(--paper);
+    text-shadow: 2px 0 0 rgba(138, 59, 42, 0.8), -2px 0 0 rgba(63, 85, 97, 0.5);
+    animation: glitchText 3s infinite alternate;
+  }
+
+  @keyframes glitchText {
+    0%, 92% { text-shadow: 2px 0 0 rgba(138, 59, 42, 0.6), -2px 0 0 rgba(63, 85, 97, 0.4); }
+    94% { text-shadow: 4px 0 0 var(--warn-bright), -3px 0 0 var(--water-bright); transform: skewX(-2deg); }
+    96% { text-shadow: -3px 0 0 var(--warn-bright), 3px 0 0 var(--water-bright); transform: skewX(2deg); }
+    98%, 100% { text-shadow: 2px 0 0 rgba(138, 59, 42, 0.6), -2px 0 0 rgba(63, 85, 97, 0.4); }
+  }
+
+  /* 일기장 박스를 핏빛 경고문 형태로 강화 */
+  .diary {
+    font-family: 'Yeon Sung', cursive; font-size: 24px; color: var(--warn-bright);
+    line-height: 1.6; margin: 0 0 18px; padding: 12px 16px;
+    background: rgba(138, 59, 42, 0.1);
+    border-left: 3px solid var(--warn-bright);
+    text-shadow: 0 0 8px rgba(182, 84, 58, 0.4);
+  }
+
+  /* 경고 메시지 깜빡임 강조 */
+  .warn {
+    font-family: 'Noto Sans KR', sans-serif; font-size: 13px; color: var(--warn-bright);
+    min-height: 18px; margin-top: -8px; margin-bottom: 10px;
+    font-weight: 700; text-shadow: 0 0 6px rgba(182, 84, 58, 0.6);
+    animation: warnPulse 1.5s infinite;
   }
   .eyebrow{
-    font-family:'Nanum Gothic', sans-serif; letter-spacing:.16em; text-transform:uppercase;
+    font-family:'Noto Sans KR', sans-serif; letter-spacing:.16em; text-transform:uppercase;
     font-size:12px; color:var(--water-bright); margin:0 0 10px; opacity:.85;
   }
-  h1{
-    font-family:'Nanum Myeongjo', serif; font-weight:800; font-size:clamp(24px,4.6vw,34px);
-    line-height:1.25; margin:0 0 18px; color:var(--paper); text-shadow:0 0 20px rgba(63,85,97,.35);
-  }
+
   p{ line-height:1.8; font-size:17px; color:var(--paper-dim); margin:0 0 18px;}
   .lede{ color:var(--paper); font-size:18px;}
-  .diary{
-    font-family:'Nanum Brush Script', cursive; font-size:22px; color:var(--mold-bright);
-    line-height:1.6; margin:0 0 18px; padding-left:14px; border-left:2px solid var(--mold);
-  }
+
   .divider{ width:64px; height:2px; margin:22px 0; background:linear-gradient(90deg, var(--mold), transparent);}
   .btn{
-    font-family:'Nanum Gothic', sans-serif; font-weight:700; background:transparent; color:var(--mold-bright);
+    font-family:'Noto Sans KR', sans-serif; font-weight:700; background:transparent; color:var(--mold-bright);
     border:1px solid var(--mold); padding:13px 26px; font-size:14px; letter-spacing:.05em; cursor:pointer;
     transition:.25s;
   }
   .btn:hover{ background:var(--mold); color:#0b0e09; box-shadow:0 0 18px rgba(154,176,106,.4);}
   .btn:active{ transform:translateY(1px);}
   .team-badge{
-    display:inline-block; font-family:'Nanum Gothic', sans-serif; font-size:12px; color:var(--water-bright);
+    display:inline-block; font-family:'Noto Sans KR', sans-serif; font-size:12px; color:var(--water-bright);
     border:1px solid var(--water); padding:4px 10px; letter-spacing:.08em; margin-bottom:18px;
   }
   select, input[type=text]{
-    font-family:'Nanum Gothic', sans-serif; background:#0a0d09; color:var(--paper); border:1px solid var(--mold);
+    font-family:'Noto Sans KR', sans-serif; background:#0a0d09; color:var(--paper); border:1px solid var(--mold);
     padding:12px 14px; font-size:16px; width:100%; margin:8px 0 18px;
   }
   select:focus, input:focus{ outline:none; border-color:var(--mold-bright); box-shadow:0 0 12px rgba(154,176,106,.25);}
   .row{ display:flex; gap:10px; align-items:center;}
-  .warn{ font-family:'Nanum Gothic', sans-serif; font-size:13px; color:var(--warn-bright); min-height:18px; margin-top:-8px; margin-bottom:10px;}
-  .stage-num{ font-family:'Nanum Gothic', sans-serif; font-size:13px; color:var(--water-bright); letter-spacing:.12em;}
-  footer{ margin-top:26px; font-family:'Nanum Gothic', sans-serif; font-size:11px; color:rgba(207,199,159,.35); text-align:center;}
+  .stage-num{ font-family:'Noto Sans KR', sans-serif; font-size:13px; color:var(--water-bright); letter-spacing:.12em;}
+  footer{ margin-top:26px; font-family:'Noto Sans KR', sans-serif; font-size:11px; color:rgba(207,199,159,.35); text-align:center;}
 
-  /* Stage 1: doors */
+  /* ============================================================
+     ACT 1 — 단계1: 젖은 문 찾기
+     ============================================================ */
   .door-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:20px 0 8px;}
   .door{
     aspect-ratio:1; display:flex; align-items:center; justify-content:center;
@@ -123,7 +159,9 @@
   .shake{ animation:shake .4s;}
   @keyframes shake{ 20%,60%{transform:translateX(-6px);} 40%,80%{transform:translateX(6px);} }
 
-  /* Stage 3: order click */
+  /* ============================================================
+     ACT 1 — 단계3: 상징 순서 맞추기
+     ============================================================ */
   .symbol-row{ display:flex; gap:12px; justify-content:center; margin:22px 0 6px; flex-wrap:wrap;}
   .symbol{
     font-size:36px; width:64px; height:64px; display:flex; align-items:center; justify-content:center;
@@ -135,42 +173,90 @@
   .pip{ width:9px; height:9px; border:1px solid var(--mold); background:transparent;}
   .pip.on{ background:var(--mold-bright); box-shadow:0 0 8px var(--mold-bright);}
 
-  /* ---- Act 0: bright chat intro ---- */
+  /* ============================================================
+     ACT 0 — 디스코드 인트로
+     (가벼운 잡담으로 시작 → 낯선 사용자 등장 → 점점 음산해짐)
+     ============================================================ */
   #act0{
-    position:fixed; inset:0; z-index:50; display:flex; align-items:flex-end; justify-content:center;
-    background:linear-gradient(180deg, #bfe3f0 0%, #ffe9a8 55%, #ffd3a0 100%);
-    padding:0;
+    position:fixed; inset:0; z-index:50; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(160deg, #dfe7ef 0%, #c7d3e0 100%);
+    padding:24px;
   }
-  .phone{
-    width:100%; max-width:420px; height:100%; max-height:760px; background:#f7f3ea;
-    display:flex; flex-direction:column; box-shadow:0 0 60px rgba(0,0,0,.35); position:relative;
+  .discord{
+    width:100%; max-width:480px; height:min(680px,86vh); background:#313338; border-radius:12px;
+    display:flex; flex-direction:column; overflow:hidden; box-shadow:0 30px 80px rgba(0,0,0,.4);
+    transition: filter 1.4s ease, box-shadow 1.4s ease;
   }
-  .phone-head{
-    background:#ffd400; padding:16px 20px; font-family:'Gaegu', sans-serif; font-weight:700; font-size:18px; color:#3c2e10;
+  /* 낯선 사용자가 처음 등장하면 살짝 가라앉는 톤 */
+  .discord.tension-1{ filter: saturate(.85) brightness(.96); }
+  /* 소름 돋는 대사(우물 등) 이후: 채도/명도를 더 낮추고 붉은 그림자를 얹음 */
+  .discord.tension-2{
+    filter: saturate(.55) brightness(.82) contrast(1.05);
+    box-shadow:0 30px 90px rgba(140,20,10,.28);
   }
-  .phone-body{ flex:1; overflow-y:auto; padding:18px; display:flex; flex-direction:column; gap:10px;}
-  .msg-name{ font-family:'Nanum Gothic', sans-serif; font-size:11px; color:#8a7c5c; margin:6px 0 2px 4px;}
-  .bubble{
-    max-width:75%; padding:11px 15px; border-radius:16px; font-family:'Gaegu', sans-serif; font-size:16px;
-    line-height:1.5; opacity:0; transform:translateY(6px); animation:pop .35s forwards;
+  .discord-head{
+    background:#2b2d31; border-bottom:1px solid #26272b; padding:14px 18px;
+    font-family:'Noto Sans KR', sans-serif; font-weight:700; font-size:15px; color:#f2f3f5;
+    display:flex; align-items:center; gap:8px;
   }
+  .discord-head .hash{ color:#80848e; font-weight:700;}
+  .discord-body{ flex:1; overflow-y:auto; padding:14px 18px; display:flex; flex-direction:column;}
+  .msg-row{ display:flex; gap:14px; padding:5px 0;}
+  .msg-row.compact{ padding-top:0;}
+  .avatar{
+    width:38px; height:38px; min-width:38px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-family:'Noto Sans KR', sans-serif; font-weight:700; font-size:14px; color:#fff; margin-top:2px;
+  }
+  .avatar.ghost{ background:#3f4147 !important; color:#80848e; font-size:16px;}
+  .msg-row.compact .avatar{ visibility:hidden; height:0; min-height:0;}
+  .msg-col{ flex:1; min-width:0;}
+  .msg-meta{ display:flex; align-items:baseline; gap:8px; margin-bottom:2px;}
+  .msg-name{ font-family:'Noto Sans KR', sans-serif; font-weight:700; font-size:15px;}
+  .msg-name.ghost{ color:#80848e;}
+  .msg-time{ font-family:'Noto Sans KR', sans-serif; font-size:11px; color:#80848e;}
+  .msg-text{
+    font-family:'Noto Sans KR', sans-serif; font-size:15px; line-height:1.45; color:#dbdee1;
+    opacity:0; transform:translateY(4px); animation:pop .3s forwards;
+  }
+  .msg-text.ghost{ color:#96999f; font-style:italic;}
+  /* 가장 소름 돋는 대사에 붙이는 미세한 깜빡임(글리치) 효과 */
+  .msg-text.ghost.dread{ animation: pop .3s forwards, flicker 2.6s 1s ease-in-out infinite; }
+  @keyframes flicker{ 0%,100%{opacity:1;} 92%{opacity:1;} 94%{opacity:.35;} 96%{opacity:.9;} }
+  .avatar.ghost.dread{ box-shadow:0 0 12px rgba(182,84,58,.55); }
   @keyframes pop{ to{opacity:1; transform:translateY(0);} }
-  .bubble.theirs{ background:#fff; color:#3a3226; align-self:flex-start; border-bottom-left-radius:4px;}
-  .bubble.mine{ background:#ffe14d; color:#3c2e10; align-self:flex-end; border-bottom-right-radius:4px;}
-  .bubble.eerie{ background:#e3ded0; color:#5a5240; font-style:italic; align-self:flex-start; border-bottom-left-radius:4px;}
-  .phone-foot{ padding:16px 20px; text-align:center;}
-  #act0-next{ display:none; }
+  .discord-foot{ padding:14px 18px 18px;}
+  .discord-input{
+    background:#383a40; border-radius:8px; padding:11px 16px; font-family:'Noto Sans KR', sans-serif;
+    font-size:14px; color:#6d6f78; cursor:default; transition:.25s;
+  }
+  .discord-input.ready{ background:#5865f2; color:#fff; cursor:pointer; text-align:center; font-weight:700;}
+  .discord-input.ready:hover{ background:#4752c4;}
+  /* "...(입력 중)" 표시 — 답 없이 사라지며 정적을 만드는 연출용 */
+  .msg-row.typing .msg-text{ display:flex; gap:4px; align-items:center; height:20px; opacity:1; animation:none;}
+  .typing-dot{ width:6px; height:6px; border-radius:50%; background:#80848e; animation:blink 1.2s infinite ease-in-out;}
+  .typing-dot:nth-child(2){ animation-delay:.2s;}
+  .typing-dot:nth-child(3){ animation-delay:.4s;}
+  @keyframes blink{ 0%,80%,100%{opacity:.25;} 40%{opacity:1;} }
 
-  /* ---- Transition ---- */
+  /* ============================================================
+     TRANSITION — ACT 0 → ACT 1 (편지 도착 장면)
+     ============================================================ */
   #act0-transition{
     position:fixed; inset:0; z-index:60; background:#000; display:flex; align-items:center; justify-content:center;
-    flex-direction:column; text-align:center; padding:24px;
+    flex-direction:column; text-align:center; padding:24px; overflow:hidden;
   }
+  #act0-transition::before{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(ellipse at center, transparent 30%, rgba(138,59,42,.18) 100%);
+    opacity:0; animation:vign 4s ease forwards;
+  }
+  @keyframes vign{ 0%,50%{opacity:0;} 100%{opacity:1;} }
   #act0-transition p{
-    font-family:'Nanum Myeongjo', serif; font-size:20px; color:var(--paper); opacity:0;
-    animation:tfade .8s forwards;
+    font-family:'Gowun Batang', serif; font-size:20px; color:var(--paper); opacity:0;
+    animation:tfade .8s forwards; position:relative; z-index:1;
   }
   #act0-transition p:nth-child(2){ animation-delay:1.6s; color:var(--warn-bright);}
+  #act0-transition p:nth-child(3){ animation-delay:2.9s; color:var(--paper-dim); font-size:16px;}
   @keyframes tfade{ from{opacity:0;} to{opacity:1;} }
 </style>
 </head>
@@ -178,16 +264,20 @@
 
 <div id="ash"></div>
 
-<!-- ACT 0: bright chat intro -->
+<!-- ============================================================
+     ACT 0 — 디스코드 인트로 (밝은 잡담 → 낯선 사용자 → 음산함)
+     ============================================================ -->
 <div id="act0">
-  <div class="phone">
-    <div class="phone-head">모그리 부대 단톡방</div>
-    <div class="phone-body" id="chat-body"></div>
-    <div class="phone-foot"><button class="btn" id="act0-next" style="border-color:#3c2e10;color:#3c2e10;">계속하기</button></div>
+  <div class="discord">
+    <div class="discord-head"><span class="hash">#</span>부대챗</div>
+    <div class="discord-body" id="chat-body"></div>
+    <div class="discord-foot"><div class="discord-input" id="act0-next">메시지 보내기...</div></div>
   </div>
 </div>
 
-<!-- Transition -->
+<!-- ============================================================
+     TRANSITION — ACT 0 → ACT 1 (편지 도착)
+     ============================================================ -->
 <div id="act0-transition" class="hidden">
   <p>그리고 며칠 후,</p>
   <p>출처를 알 수 없는 편지 한 통이 도착했다.</p>
@@ -195,7 +285,25 @@
 
 <div class="frame">
 
-  <!-- No team assigned -->
+  <!-- ============================================================
+       ACT 1 — 서막: 정체불명의 편지
+       ============================================================ -->   
+  <section id="stage-0" class="stage hidden">
+    <p class="team-badge" id="team-badge-0"></p>
+    <p class="eyebrow">ACT 1</p>
+    <h1>정체불명의 편지</h1>
+    <p class="lede">기괴하게 오려 붙인 글자들, 당신의 일상을 모두 지켜본 듯한 문장들. 편지를 살피던 중, 라벤더 향과 함께 옅은 좌표가 찍혀 있는 걸 발견했다.</p>
+    <!-- 좌표는 헤피@모그리의 하우징 주소를 가리키도록 한다 -->
+    <!-- <p>불안을 안고 좌표가 가리키는 낡은 집 앞에 도착한 당신. 그런데 그곳엔 이미 익숙한 사람들이 모여 있었다 — 모두 같은 편지를 받고 모인 만두들이었다.</p> -->
+    <!-- <p class="diary">"너도 이 편지를 받고 왔어?"</p> -->
+    <div class="divider"></div>
+    <button class="btn" id="start-btn">봉투를 연다</button>
+  </section>
+
+  
+  <!-- ============================================================
+       팀 선택 (팀 미지정 상태로 접속했을 때만 표시)
+       ============================================================ -->
   <section id="stage-noteam" class="stage hidden">
     <p class="eyebrow">입장</p>
     <h1>당신의 팀을 선택하라</h1>
@@ -204,152 +312,100 @@
       <option value="">— 팀 선택 —</option>
     </select>
     <button class="btn" id="team-confirm">입장한다</button>
-  </section>
+  </section> 
 
-  <!-- Intro -->
-  <section id="stage-0" class="stage hidden">
-    <p class="team-badge" id="team-badge-0"></p>
-    <p class="eyebrow">서막</p>
-    <h1>정체불명의 편지</h1>
-    <p class="lede">기괴하게 오려 붙인 글자들, 당신의 일상을 모두 지켜본 듯한 문장들. 편지를 살피던 중, 봉투를 봉하다 흘린 듯한 풀 자국 끝에 옅은 좌표가 찍혀 있는 걸 발견했다.</p>
-    <p>불안을 안고 좌표가 가리키는 낡은 집 앞에 도착한 당신. 그런데 그곳엔 이미 낯선 사람들이 모여 있었다 — 모두 같은 편지를 받고 온 이들이었다.</p>
-    <p class="diary">"너도 이 편지를 받고 왔어?"</p>
-    <div class="divider"></div>
-    <button class="btn" id="start-btn">함께 문을 연다</button>
-  </section>
-
-  <!-- Stage 1: hidden object (doors) -->
-  <section id="stage-1" class="stage hidden">
-    <p class="stage-num">단계 1 / 4 — 1층, 문으로 가득한 방</p>
-    <h1>젖은 문을 찾아라</h1>
-    <p>집 안은 온통 문투성이다. 아홉 개의 문 중 하나만이 축축하게 젖어 있다 — 누군가 방금 지나간 것처럼.</p>
-    <div class="door-grid" id="door-grid"></div>
-    <p class="warn" id="warn-1">&nbsp;</p>
-  </section>
-
-  <!-- Stage 2: code input -->
-  <section id="stage-2" class="stage hidden">
-    <p class="stage-num">단계 2 / 4 — 지하로 내려가는 계단</p>
-    <h1>버려진 일기장</h1>
-    <p>계단 밑에서 곰팡이 슨 일기장 한 권을 주웠다. 번진 글씨로 이렇게 적혀 있다:</p>
-    <p class="diary">"그가 쓰러진 시각, 그것이 전부였다. 시계는 3시 15분에 멈춰 있었다."</p>
-    <p>4자리 숫자를 입력하라. (콜론 없이, 예: 3시 5분 → 0305)</p>
-    <input type="text" id="code-2" maxlength="4" placeholder="0000" inputmode="numeric">
-    <div class="row"><button class="btn" id="submit-2">확인한다</button></div>
-    <p class="warn" id="warn-2">&nbsp;</p>
-  </section>
-
-  <!-- Stage 3: order click -->
-  <section id="stage-3" class="stage hidden">
-    <p class="stage-num">단계 3 / 4 — 지하 미로</p>
-    <h1>벽에 새겨진 낙서</h1>
-    <p>곰팡이로 얼룩진 벽에 손톱으로 긁은 듯한 문장이 있다:</p>
-    <p class="diary">"밤에 날고, 문을 지키고, 죽음을 세고, 침묵으로 짜고, 마지막엔 빛을 든다."</p>
-    <p>이 순서대로 상징을 눌러라.</p>
-    <div class="symbol-row" id="symbol-row"></div>
-    <div class="pips" id="pips-3"></div>
-    <p class="warn" id="warn-3">&nbsp;</p>
-  </section>
-
-  <!-- Stage 4: final code -->
-  <section id="stage-4" class="stage hidden">
-    <p class="stage-num">단계 4 / 4 — 막다른 문</p>
-    <h1>마지막 문</h1>
-    <p>좌표, 낙서의 순서, 그리고 젖은 문의 흔적. 지금까지 모은 단서를 조합하면 탈출 코드가 된다.</p>
-    <p>진행자가 알려준 <strong>최종 탈출 코드</strong>를 입력하라.</p>
-    <input type="text" id="code-4" maxlength="4" placeholder="0000" inputmode="numeric">
-    <div class="row"><button class="btn" id="submit-4">문을 연다</button></div>
-    <p class="warn" id="warn-4">&nbsp;</p>
-  </section>
-
-  <!-- Complete -->
-  <section id="stage-complete" class="stage hidden">
-    <p class="eyebrow">종막</p>
-    <h1>탈출 성공</h1>
-    <p class="lede">문이 열리고 밤공기가 얼굴에 닿는 순간, 뒤에서 부스럭거리는 소리가 들렸다. 돌아보니 — 개구리 탈을 뒤집어쓴 누군가가 어색하게 손을 흔들고 있었다.</p>
-    <p class="diary">"미, 미안... 만두 홍보하고 싶어서 그만..."</p>
-    <p>알고 보니 모든 건 열혈 만두 팬의 서투른 홍보 이벤트였다. 살아서 나온 당신의 팀, 고생했다.</p>
-    <p id="complete-time"></p>
-  </section>
-
-  <footer>만두의 여름나기 · 살아서 나가라</footer>
+  <footer>만두의 여름나기</footer>
 </div>
 
 <script type="module">
 /* ================= 설정 (여기만 고치면 됨) ================= */
 const CONFIG = {
-  teams: ['A','B','C','D','E','F','G','H'],
-  stage2Answer: '0315',
-  stage4Answer: '2013',
-  stage3Order: ['bat','key','skull','web','candle'], // 박쥐 → 열쇠 → 해골 → 거미줄 → 촛불
+  teams: ['고래','상어','참치','문어','오리'],
   chatIntro: [
-    { name:'헤피', text:'다들 이번 여름 휴가 뭐함?? 우리 바다 갈까', mine:false },
-    { name:'새봄', text:'좋다ㅋㅋㅋ 튜브는 내가 챙길게', mine:false },
-    { name:'나', text:'콜! 근데 날짜는 언제로?', mine:true },
-    { name:'헤피', text:'이번주 토요일 어때', mine:false },
-    { name:'???', text:'저도 가도 되나요', mine:false, eerie:true },
-    { name:'새봄', text:'ㅋㅋㅋ누구세요 헤피 부캐임?', mine:false },
-    { name:'헤피', text:'아닌데;; 나 아님', mine:false },
-    { name:'???', text:'곧 만나요', mine:false, eerie:true },
-  ],
-  firebase: {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-    projectId: "YOUR_PROJECT",
-  }
+    { name:'헤피', text:'이번 여름 이벤트는 어디서 모일까요?', time:'오후 4:51' },
+    { name:'새봄', text:'검은장막 숲 계곡물이 차갑다던데 어때요?', time:'오후 4:52' },
+    { name:'만두(나)', text:'좋아요! 드레스 코드는 어떻게 될까요?', time:'오후 4:52' },
+    { name:'알 수 없는 사용자', text:'저도 가도 되나요', eerie:true, time:'오후 4:53' },
+    { name:'새봄', text:'ㅋㅋㅋ누구시지? 헤피가 장난치나', time:'오후 4:54' },
+    { name:'헤피', text:'아닌데;; 나 아님', time:'오후 4:54' },
+    { name:'알 수 없는 사용자', text:'곧 만나요', eerie:true, time:'오후 4:55' },
+  ]
 };
 /* ============================================================ */
 
-const SYMBOLS = { bat:'🦇', key:'🗝️', skull:'💀', web:'🕸️', candle:'🕯️' };
 const $ = (id) => document.getElementById(id);
 
-/* ---- Act 0: chat intro ---- */
+/* ============================================================
+   ACT 0 — 디스코드 인트로 로직
+   ============================================================ */
+const AVATAR_COLORS = ['#5865f2','#57f287','#eb459e','#faa61a','#ed4245'];
+function colorFor(name){
+  let h = 0;
+  for (const c of name) h = (h * 31 + c.charCodeAt(0)) % AVATAR_COLORS.length;
+  return AVATAR_COLORS[h];
+}
 const chatBody = $('chat-body');
 let ci = 0;
+let lastName = null;
 function playChat(){
-  if (ci >= CONFIG.chatIntro.length){ $('act0-next').style.display='inline-block'; return; }
-  const m = CONFIG.chatIntro[ci];
-  if (!m.mine){
-    const nameEl = document.createElement('div');
-    nameEl.className = 'msg-name'; nameEl.textContent = m.name;
-    chatBody.appendChild(nameEl);
+  if (ci >= CONFIG.chatIntro.length){
+    const btn = $('act0-next');
+    btn.textContent = '계속하기';
+    btn.classList.add('ready');
+    btn.onclick = () => {
+      $('act0').classList.add('hidden');
+      $('act0-transition').classList.remove('hidden');
+      setTimeout(afterTransition, 6000);
+    };
+    return;
   }
-  const b = document.createElement('div');
-  b.className = 'bubble ' + (m.mine ? 'mine' : (m.eerie ? 'eerie' : 'theirs'));
-  b.textContent = m.text;
-  chatBody.appendChild(b);
+  const m = CONFIG.chatIntro[ci];
+  const compact = (m.name === lastName);
+  const row = document.createElement('div');
+  row.className = 'msg-row' + (compact ? ' compact' : '');
+
+  const avatar = document.createElement('div');
+  avatar.className = 'avatar' + (m.eerie ? ' ghost' : '');
+  avatar.style.background = m.eerie ? '' : colorFor(m.name);
+  avatar.textContent = m.eerie ? '?' : m.name.slice(0,1);
+  row.appendChild(avatar);
+
+  const col = document.createElement('div');
+  col.className = 'msg-col';
+  if (!compact){
+    const meta = document.createElement('div');
+    meta.className = 'msg-meta';
+    const nameEl = document.createElement('span');
+    nameEl.className = 'msg-name' + (m.eerie ? ' ghost' : '');
+    nameEl.style.color = m.eerie ? '' : colorFor(m.name);
+    nameEl.textContent = m.name;
+    const timeEl = document.createElement('span');
+    timeEl.className = 'msg-time';
+    timeEl.textContent = m.time || '';
+    meta.appendChild(nameEl); meta.appendChild(timeEl);
+    col.appendChild(meta);
+  }
+  const textEl = document.createElement('div');
+  textEl.className = 'msg-text' + (m.eerie ? ' ghost' : '');
+  textEl.textContent = m.text;
+  col.appendChild(textEl);
+  row.appendChild(col);
+
+  chatBody.appendChild(row);
   chatBody.scrollTop = chatBody.scrollHeight;
+  lastName = m.name;
   ci++;
-  setTimeout(playChat, m.eerie ? 1400 : 850);
+  setTimeout(playChat, m.eerie ? 1400 : 800);
 }
 playChat();
-$('act0-next').onclick = () => {
-  $('act0').classList.add('hidden');
-  $('act0-transition').classList.remove('hidden');
-  setTimeout(afterTransition, 3200);
-};
 
+/* ============================================================
+   TRANSITION 로직 — ACT 0 종료 후 팀 배정에 따라 분기
+   ============================================================ */
 function afterTransition(){
   $('act0-transition').classList.add('hidden');
   if (team) { $('team-badge-0').textContent = team + '팀'; show('stage-0'); reportProgress(team, 0); }
   else { show('stage-noteam'); }
-}
-
-/* ---- Firebase (optional; skips silently if not configured) ---- */
-let dbSet = null;
-if (CONFIG.firebase.apiKey !== 'YOUR_API_KEY') {
-  try {
-    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js");
-    const { getDatabase, ref, set } = await import("https://www.gstatic.com/firebasejs/10.13.0/firebase-database.js");
-    const app = initializeApp(CONFIG.firebase);
-    const db = getDatabase(app);
-    dbSet = (t, data) => set(ref(db, 'teams/' + t), data).catch(()=>{});
-  } catch(e) { console.warn('Firebase off:', e); }
-}
-function reportProgress(t, stage, extra={}) {
-  if (!dbSet) return;
-  dbSet(t, { stage, updatedAt: Date.now(), ...extra });
 }
 
 /* ---- Team resolution ---- */
@@ -365,97 +421,26 @@ CONFIG.teams.forEach(t=>{
   opt.value = t; opt.textContent = t + '팀';
   sel.appendChild(opt);
 });
+
 $('team-confirm').onclick = () => {
   if (!sel.value) return;
+  
+  // 1. 선택한 팀 설정
+  team = sel.value;
+  
+  // 2. URL 파라미터만 살짝 변경 (페이지 새로고침 X)
   const url = new URL(location.href);
-  url.searchParams.set('team', sel.value);
-  location.href = url.toString();
+  url.searchParams.set('team', team);
+  history.pushState({}, '', url.toString());
+
+  // 3. 뱃지 업데이트 후 ACT 1(stage-0)으로 바로 이동
+  $('team-badge-0').textContent = team + '팀';
+  show('stage-0');
+  reportProgress(team, 0);
 };
 
 $('start-btn').onclick = () => { show('stage-1'); initStage1(); reportProgress(team, 1); };
 
-/* ---- Stage 1: hidden object (doors) ---- */
-function initStage1(){
-  const grid = $('door-grid');
-  grid.innerHTML = '';
-  const wetIndex = Math.floor(Math.random()*9);
-  for (let i=0;i<9;i++){
-    const div = document.createElement('div');
-    div.className = 'door ' + (i===wetIndex ? 'wet' : '');
-    div.textContent = '🚪';
-    div.onclick = () => {
-      if (i===wetIndex){ show('stage-2'); reportProgress(team, 2); }
-      else {
-        div.classList.add('shake');
-        $('warn-1').textContent = '아니다... 이 문은 말랐다.';
-        setTimeout(()=>div.classList.remove('shake'), 400);
-      }
-    };
-    grid.appendChild(div);
-  }
-}
-
-/* ---- Stage 2: code input ---- */
-$('submit-2').onclick = () => {
-  const v = $('code-2').value.trim();
-  if (v === CONFIG.stage2Answer){ show('stage-3'); initStage3(); reportProgress(team, 3); }
-  else { $('warn-2').textContent = '틀렸다. 일기장을 다시 보라.'; }
-};
-
-/* ---- Stage 3: order click ---- */
-let picked = [];
-function initStage3(){
-  picked = [];
-  const row = $('symbol-row'); row.innerHTML = '';
-  const pips = $('pips-3'); pips.innerHTML = '';
-  const keys = Object.keys(SYMBOLS).sort(()=>Math.random()-0.5);
-  keys.forEach(k=>{
-    const div = document.createElement('div');
-    div.className = 'symbol'; div.textContent = SYMBOLS[k];
-    div.onclick = () => pickSymbol(k, div);
-    row.appendChild(div);
-  });
-  for (let i=0;i<CONFIG.stage3Order.length;i++){
-    const p = document.createElement('div'); p.className = 'pip'; pips.appendChild(p);
-  }
-}
-function pickSymbol(k, el){
-  const expected = CONFIG.stage3Order[picked.length];
-  if (k === expected){
-    picked.push(k); el.classList.add('picked');
-    $('pips-3').children[picked.length-1].classList.add('on');
-    if (picked.length === CONFIG.stage3Order.length){
-      setTimeout(()=>{ show('stage-4'); reportProgress(team, 4); }, 400);
-    }
-  } else {
-    $('warn-3').textContent = '순서가 틀렸다. 처음부터 다시.';
-    document.querySelectorAll('#symbol-row .symbol').forEach(s=>s.classList.remove('picked'));
-    document.querySelectorAll('#pips-3 .pip').forEach(p=>p.classList.remove('on'));
-    picked = [];
-  }
-}
-
-/* ---- Stage 4: final code ---- */
-$('submit-4').onclick = () => {
-  const v = $('code-4').value.trim();
-  if (v === CONFIG.stage4Answer){
-    show('stage-complete');
-    const now = new Date();
-    $('complete-time').textContent = '탈출 시각: ' + now.toLocaleTimeString('ko-KR');
-    reportProgress(team, 5, { completed:true, completedAt: Date.now() });
-  } else { $('warn-4').textContent = '코드가 맞지 않는다...'; }
-};
-
-/* ---- Ambient drips ---- */
-const ashEl = $('ash');
-for (let i=0;i<22;i++){
-  const e = document.createElement('div');
-  e.className = 'drip';
-  e.style.left = Math.random()*100 + 'vw';
-  e.style.animationDuration = (4+Math.random()*6)+'s';
-  e.style.animationDelay = (Math.random()*8)+'s';
-  ashEl.appendChild(e);
-}
 </script>
 </body>
 </html>
