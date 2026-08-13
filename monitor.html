@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>진행자 모니터 — 저주받은 별장</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Special+Elite&family=EB+Garamond:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0608; --panel:#170c10; --parchment:#e9ddc2; --parchment-dim:#a99a7c;
+    --brass:#9c7a3c; --brass-bright:#d1a94f; --sage:#3d5240; --sage-bright:#5c7c60;
+    --blood:#6b1420; --blood-bright:#9c2233;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; min-height:100vh; padding:40px 24px;
+    background:radial-gradient(ellipse at 50% -10%, #241017 0%, var(--bg) 55%), var(--bg);
+    color:var(--parchment); font-family:'EB Garamond', serif;
+  }
+  .wrap{ max-width:920px; margin:0 auto;}
+  .eyebrow{ font-family:'Special Elite', monospace; letter-spacing:.18em; text-transform:uppercase; font-size:12px; color:var(--brass-bright); opacity:.85; margin:0 0 8px;}
+  h1{ font-family:'Cinzel Decorative', serif; font-size:clamp(24px,4vw,34px); margin:0 0 4px;}
+  .sub{ color:var(--parchment-dim); margin:0 0 30px; font-size:16px;}
+  .config-warning{
+    display:none; border:1px solid var(--blood); background:rgba(107,20,32,.15);
+    padding:16px 18px; margin-bottom:24px; font-family:'Special Elite', monospace; font-size:13px; color:var(--blood-bright);
+  }
+  table{ width:100%; border-collapse:collapse; }
+  th{
+    text-align:left; font-family:'Special Elite', monospace; font-size:12px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--brass-bright); padding:10px 14px; border-bottom:1px solid rgba(156,122,60,.4);
+  }
+  td{ padding:14px; border-bottom:1px solid rgba(156,122,60,.15); font-size:16px; vertical-align:middle;}
+  tr.done td{ color:var(--sage-bright);}
+  .team-name{ font-family:'Special Elite', monospace; font-size:15px; letter-spacing:.06em;}
+  .bar-track{ background:rgba(0,0,0,.4); height:8px; width:180px; position:relative; border:1px solid rgba(156,122,60,.3);}
+  .bar-fill{ position:absolute; inset:0; width:0%; background:linear-gradient(90deg, var(--brass), var(--brass-bright)); transition:width .4s;}
+  .bar-fill.done{ background:linear-gradient(90deg, var(--sage), var(--sage-bright));}
+  .stage-label{ font-family:'Special Elite', monospace; font-size:13px; color:var(--parchment-dim); white-space:nowrap;}
+  .updated{ font-family:'Special Elite', monospace; font-size:12px; color:var(--parchment-dim); opacity:.75;}
+  .badge-done{
+    font-family:'Special Elite', monospace; font-size:11px; letter-spacing:.08em; color:var(--sage-bright);
+    border:1px solid var(--sage); padding:2px 8px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">진행자 전용</p>
+  <h1>별장 감시대</h1>
+  <p class="sub">각 팀의 현재 진행 상황을 실시간으로 지켜본다. 이 링크는 참가자에게 공유하지 말 것.</p>
+
+  <div class="config-warning" id="config-warning">
+    Firebase 설정이 아직 비어 있다. index.html과 monitor.html 상단의 CONFIG.firebase 값을 채워야 실시간 모니터링이 작동한다.
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>팀</th><th>진행률</th><th>단계</th><th>마지막 업데이트</th></tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+</div>
+
+<script type="module">
+/* index.html과 반드시 동일하게 맞출 것 */
+const CONFIG = {
+  teams: ['A','B','C','D','E','F','G','H'],
+  firebase: {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+    projectId: "YOUR_PROJECT",
+  }
+};
+
+const STAGE_LABEL = {0:'입장 전',1:'1단계 진행중',2:'2단계 진행중',3:'3단계 진행중',4:'4단계 진행중',5:'탈출 완료'};
+const TOTAL = 5;
+
+const rowsEl = document.getElementById('rows');
+const state = {};
+CONFIG.teams.forEach(t => state[t] = {stage:0, updatedAt:null});
+
+function render(){
+  rowsEl.innerHTML = '';
+  const sorted = [...CONFIG.teams].sort((a,b)=> (state[b].stage - state[a].stage));
+  sorted.forEach(t=>{
+    const s = state[t];
+    const tr = document.createElement('tr');
+    if (s.stage >= TOTAL) tr.className = 'done';
+    const pct = Math.min(100, Math.round((s.stage/TOTAL)*100));
+    const ago = s.updatedAt ? timeAgo(s.updatedAt) : '—';
+    tr.innerHTML = `
+      <td class="team-name">${t}팀</td>
+      <td><div class="bar-track"><div class="bar-fill ${s.stage>=TOTAL?'done':''}" style="width:${pct}%"></div></div></td>
+      <td class="stage-label">${s.stage>=TOTAL ? '<span class=\"badge-done\">완료</span>' : STAGE_LABEL[s.stage]}</td>
+      <td class="updated">${ago}</td>
+    `;
+    rowsEl.appendChild(tr);
+  });
+}
+
+function timeAgo(ts){
+  const sec = Math.floor((Date.now()-ts)/1000);
+  if (sec < 5) return '방금';
+  if (sec < 60) return sec+'초 전';
+  const min = Math.floor(sec/60);
+  if (min < 60) return min+'분 전';
+  return Math.floor(min/60)+'시간 전';
+}
+
+render();
+setInterval(render, 5000); // refresh "n분 전" labels even without new data
+
+if (CONFIG.firebase.apiKey === 'YOUR_API_KEY') {
+  document.getElementById('config-warning').style.display = 'block';
+} else {
+  try {
+    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js");
+    const { getDatabase, ref, onValue } = await import("https://www.gstatic.com/firebasejs/10.13.0/firebase-database.js");
+    const app = initializeApp(CONFIG.firebase);
+    const db = getDatabase(app);
+    onValue(ref(db, 'teams'), (snap) => {
+      const val = snap.val() || {};
+      CONFIG.teams.forEach(t=>{
+        if (val[t]) state[t] = { stage: val[t].stage||0, updatedAt: val[t].updatedAt||null };
+      });
+      render();
+    });
+  } catch(e){
+    console.warn('Firebase off:', e);
+    document.getElementById('config-warning').style.display = 'block';
+  }
+}
+</script>
+</body>
+</html>

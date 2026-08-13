@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>저주받은 별장 — 탈출하라</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#100609;
+    --bg-alt:#1c0d12;
+    --parchment:#e9ddc2;
+    --parchment-dim:#b9ab88;
+    --blood:#6b1420;
+    --blood-bright:#9c2233;
+    --brass:#9c7a3c;
+    --brass-bright:#d1a94f;
+    --sage:#3d5240;
+    --sage-bright:#5c7c60;
+    --shadow: rgba(0,0,0,.65);
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at 50% -10%, #2a1219 0%, var(--bg) 55%),
+      var(--bg);
+    color:var(--parchment);
+    font-family:'EB Garamond', serif;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    position:relative;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,.75) 100%);
+    pointer-events:none;
+    z-index:5;
+  }
+  #ash{position:fixed; inset:0; pointer-events:none; z-index:4; overflow:hidden;}
+  .ember{
+    position:absolute; bottom:-10px; width:3px; height:3px; border-radius:50%;
+    background:var(--brass-bright); opacity:.6;
+    animation:rise linear infinite;
+    box-shadow:0 0 6px var(--brass-bright);
+  }
+  @keyframes rise{
+    from{ transform:translateY(0) translateX(0); opacity:0;}
+    10%{opacity:.7;}
+    to{ transform:translateY(-110vh) translateX(var(--drift,20px)); opacity:0;}
+  }
+
+  .frame{
+    position:relative; z-index:10;
+    max-width:640px; width:100%;
+    background:linear-gradient(180deg, var(--bg-alt), #150a0d);
+    border:1px solid rgba(156,122,60,.35);
+    box-shadow:0 0 0 1px rgba(0,0,0,.4), 0 30px 80px var(--shadow), inset 0 0 60px rgba(0,0,0,.5);
+    padding:44px 40px;
+    clip-path: polygon(0 6px, 6px 0, calc(100% - 6px) 0, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 0 calc(100% - 6px));
+  }
+  .eyebrow{
+    font-family:'Special Elite', monospace;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    font-size:12px;
+    color:var(--brass-bright);
+    margin:0 0 10px;
+    opacity:.85;
+  }
+  h1{
+    font-family:'Cinzel Decorative', serif;
+    font-weight:700;
+    font-size:clamp(26px,5vw,38px);
+    line-height:1.15;
+    margin:0 0 18px;
+    color:var(--parchment);
+    text-shadow:0 0 24px rgba(156,34,51,.35);
+  }
+  p{ line-height:1.7; font-size:18px; color:var(--parchment-dim); margin:0 0 18px;}
+  .lede{ color:var(--parchment); font-size:19px; font-style:italic;}
+  .divider{
+    width:64px; height:2px; margin:22px 0;
+    background:linear-gradient(90deg, var(--brass), transparent);
+  }
+  .btn{
+    font-family:'Special Elite', monospace;
+    background:transparent;
+    color:var(--brass-bright);
+    border:1px solid var(--brass);
+    padding:13px 26px;
+    font-size:14px;
+    letter-spacing:.08em;
+    cursor:pointer;
+    transition:.25s;
+    text-transform:uppercase;
+  }
+  .btn:hover{ background:var(--brass); color:#100609; box-shadow:0 0 18px rgba(209,169,79,.5);}
+  .btn:active{ transform:translateY(1px);}
+  .btn.danger{ border-color:var(--blood); color:var(--blood-bright);}
+  .btn.danger:hover{ background:var(--blood); color:var(--parchment); box-shadow:0 0 18px rgba(156,34,51,.5);}
+
+  .hidden{ display:none !important;}
+  .stage{ animation: reveal .6s ease both; }
+  @keyframes reveal{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
+
+  .team-badge{
+    display:inline-block; font-family:'Special Elite', monospace; font-size:12px;
+    color:var(--sage-bright); border:1px solid var(--sage); padding:4px 10px; letter-spacing:.1em;
+    margin-bottom:18px;
+  }
+
+  select, input[type=text]{
+    font-family:'Special Elite', monospace;
+    background:#0c0508; color:var(--parchment); border:1px solid var(--brass);
+    padding:12px 14px; font-size:16px; width:100%; margin:8px 0 18px; letter-spacing:.05em;
+  }
+  select:focus, input:focus{ outline:none; border-color:var(--brass-bright); box-shadow:0 0 12px rgba(209,169,79,.25);}
+
+  .row{ display:flex; gap:10px; align-items:center;}
+  .warn{
+    font-family:'Special Elite', monospace; font-size:13px; color:var(--blood-bright);
+    min-height:18px; margin-top:-8px; margin-bottom:10px;
+  }
+
+  /* Stage 1: hidden object grid */
+  .candle-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:20px 0 8px;}
+  .candle{
+    aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+    font-size:34px; background:rgba(0,0,0,.3); border:1px solid rgba(156,122,60,.25);
+    cursor:pointer; transition:.2s; user-select:none;
+  }
+  .candle:hover{ border-color:var(--brass); background:rgba(156,122,60,.1);}
+  .candle.flicker{ animation:flicker 2.6s infinite ease-in-out; }
+  .candle.cursed{ animation:flicker-cursed 1.1s infinite ease-in-out; filter:hue-rotate(280deg) saturate(1.4);}
+  @keyframes flicker{ 0%,100%{opacity:1;} 45%{opacity:.75;} 50%{opacity:1;} 78%{opacity:.85;} }
+  @keyframes flicker-cursed{ 0%,100%{opacity:1;} 40%{opacity:.5;} 55%{opacity:1;} 70%{opacity:.4;} }
+  .shake{ animation:shake .4s;}
+  @keyframes shake{ 20%,60%{transform:translateX(-6px);} 40%,80%{transform:translateX(6px);} }
+
+  /* Stage 3: order click */
+  .symbol-row{ display:flex; gap:12px; justify-content:center; margin:22px 0 6px; flex-wrap:wrap;}
+  .symbol{
+    font-size:36px; width:64px; height:64px; display:flex; align-items:center; justify-content:center;
+    border:1px solid rgba(156,122,60,.25); background:rgba(0,0,0,.3); cursor:pointer; transition:.2s;
+  }
+  .symbol:hover{ border-color:var(--brass);}
+  .symbol.picked{ border-color:var(--sage-bright); background:rgba(60,82,64,.25);}
+  .pips{ display:flex; gap:6px; justify-content:center; margin:14px 0 4px;}
+  .pip{ width:9px; height:9px; border:1px solid var(--brass); background:transparent;}
+  .pip.on{ background:var(--brass-bright); box-shadow:0 0 8px var(--brass-bright);}
+
+  .stage-num{ font-family:'Special Elite', monospace; font-size:13px; color:var(--sage-bright); letter-spacing:.15em;}
+  footer{ margin-top:26px; font-family:'Special Elite', monospace; font-size:11px; color:rgba(185,171,136,.4); text-align:center;}
+</style>
+</head>
+<body>
+
+<div id="ash"></div>
+
+<div class="frame">
+
+  <!-- No team assigned -->
+  <section id="stage-noteam" class="stage">
+    <p class="eyebrow">입장</p>
+    <h1>당신의 팀을 선택하라</h1>
+    <p>초대장에 적힌 팀 이름을 골라라. 그 팀의 운명이 당신의 손에 달려 있다.</p>
+    <select id="team-select">
+      <option value="">— 팀 선택 —</option>
+    </select>
+    <button class="btn" id="team-confirm">입장한다</button>
+  </section>
+
+  <!-- Intro -->
+  <section id="stage-0" class="stage hidden">
+    <p class="team-badge" id="team-badge-0"></p>
+    <p class="eyebrow">서막</p>
+    <h1>저주받은 별장</h1>
+    <p class="lede">폭풍우가 몰아치던 밤, 당신들의 차는 산길에서 멈춰 섰다. 불빛이 새어 나오는 낡은 별장 문을 두드리자, 문은 저절로 열렸다.</p>
+    <p>안으로 들어선 순간, 등 뒤에서 문이 쾅 닫혔다. 벽난로 위 낡은 시계가 자정을 가리키며 멈춰 있다. 살아서 나가려면, 이 집이 숨긴 것들을 찾아야 한다.</p>
+    <div class="divider"></div>
+    <button class="btn" id="start-btn">문을 연다</button>
+  </section>
+
+  <!-- Stage 1: hidden object -->
+  <section id="stage-1" class="stage hidden">
+    <p class="stage-num">단계 1 / 4 — 촛불의 방</p>
+    <h1>저주받은 촛불을 찾아라</h1>
+    <p>아홉 개의 촛불이 타오른다. 그중 단 하나만이 다른 박자로 흔들린다. 저주의 흔적이다.</p>
+    <div class="candle-grid" id="candle-grid"></div>
+    <p class="warn" id="warn-1">&nbsp;</p>
+  </section>
+
+  <!-- Stage 2: code input -->
+  <section id="stage-2" class="stage hidden">
+    <p class="stage-num">단계 2 / 4 — 서재</p>
+    <h1>멈춘 시계의 비밀</h1>
+    <p>벽난로 위 괘종시계는 <strong>3시 15분</strong>에 멈춰 있다. 책상 위 낙서: <em>"그가 쓰러진 시각, 그것이 곧 열쇠다."</em></p>
+    <p>4자리 숫자를 입력하라. (콜론 없이, 예: 3시 5분 → 0305)</p>
+    <input type="text" id="code-2" maxlength="4" placeholder="0000" inputmode="numeric">
+    <div class="row">
+      <button class="btn" id="submit-2">확인한다</button>
+    </div>
+    <p class="warn" id="warn-2">&nbsp;</p>
+  </section>
+
+  <!-- Stage 3: order click -->
+  <section id="stage-3" class="stage hidden">
+    <p class="stage-num">단계 3 / 4 — 서고</p>
+    <h1>책장의 순서</h1>
+    <p>일기장 마지막 페이지: <em>"밤에 날고, 문을 지키고, 죽음을 세고, 침묵으로 짜고, 마지막엔 빛을 든다."</em></p>
+    <p>이 순서대로 상징을 눌러라.</p>
+    <div class="symbol-row" id="symbol-row"></div>
+    <div class="pips" id="pips-3"></div>
+    <p class="warn" id="warn-3">&nbsp;</p>
+  </section>
+
+  <!-- Stage 4: final code -->
+  <section id="stage-4" class="stage hidden">
+    <p class="stage-num">단계 4 / 4 — 현관</p>
+    <h1>탈출의 문</h1>
+    <p>지금까지 모은 단서: 시계의 시각, 상징의 순서, 촛불의 자리. 문에는 낡은 자물쇠가 걸려 있다.</p>
+    <p>진행자가 알려준 <strong>최종 탈출 코드</strong>를 입력하라.</p>
+    <input type="text" id="code-4" maxlength="4" placeholder="0000" inputmode="numeric">
+    <div class="row">
+      <button class="btn" id="submit-4">문을 연다</button>
+    </div>
+    <p class="warn" id="warn-4">&nbsp;</p>
+  </section>
+
+  <!-- Complete -->
+  <section id="stage-complete" class="stage hidden">
+    <p class="eyebrow">종막</p>
+    <h1>탈출 성공</h1>
+    <p class="lede">문이 삐걱이며 열린다. 차가운 밤공기가 얼굴을 스친다. 당신의 팀은 살아서 별장을 빠져나왔다.</p>
+    <p id="complete-time"></p>
+  </section>
+
+  <footer>저주받은 별장 · 살아서 나가라</footer>
+</div>
+
+<script type="module">
+/* ================= 설정 (여기만 고치면 됨) ================= */
+const CONFIG = {
+  teams: ['A','B','C','D','E','F','G','H'],
+  stage2Answer: '0315',
+  stage4Answer: '2013',
+  // 순서: 박쥐 → 열쇠 → 해골 → 거미줄 → 촛불
+  stage3Order: ['bat','key','skull','web','candle'],
+  firebase: {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+    projectId: "YOUR_PROJECT",
+  }
+};
+/* ============================================================ */
+
+const SYMBOLS = { bat:'🦇', key:'🗝️', skull:'💀', web:'🕸️', candle:'🕯️' };
+
+// --- Firebase (optional; skips silently if not configured) ---
+let dbSet = null;
+if (CONFIG.firebase.apiKey !== 'YOUR_API_KEY') {
+  try {
+    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js");
+    const { getDatabase, ref, set } = await import("https://www.gstatic.com/firebasejs/10.13.0/firebase-database.js");
+    const app = initializeApp(CONFIG.firebase);
+    const db = getDatabase(app);
+    dbSet = (team, data) => set(ref(db, 'teams/' + team), data).catch(()=>{});
+  } catch(e) { console.warn('Firebase off:', e); }
+}
+
+function reportProgress(team, stage, extra={}) {
+  if (!dbSet) return;
+  dbSet(team, { stage, updatedAt: Date.now(), ...extra });
+}
+
+// --- Team resolution ---
+const params = new URLSearchParams(location.search);
+let team = (params.get('team') || '').toUpperCase();
+if (!CONFIG.teams.includes(team)) team = null;
+
+const $ = (id) => document.getElementById(id);
+function show(id){ document.querySelectorAll('.stage').forEach(s=>s.classList.add('hidden')); $(id).classList.remove('hidden'); }
+
+if (!team) {
+  const sel = $('team-select');
+  CONFIG.teams.forEach(t=>{
+    const opt = document.createElement('option');
+    opt.value = t; opt.textContent = t + '팀';
+    sel.appendChild(opt);
+  });
+  show('stage-noteam');
+  $('team-confirm').onclick = () => {
+    if (!sel.value) return;
+    const url = new URL(location.href);
+    url.searchParams.set('team', sel.value);
+    location.href = url.toString();
+  };
+} else {
+  $('team-badge-0').textContent = team + '팀';
+  show('stage-0');
+  reportProgress(team, 0);
+}
+
+$('start-btn').onclick = () => { show('stage-1'); initStage1(); reportProgress(team, 1); };
+
+/* ---- Stage 1: hidden object ---- */
+function initStage1(){
+  const grid = $('candle-grid');
+  grid.innerHTML = '';
+  const cursedIndex = Math.floor(Math.random()*9);
+  for (let i=0;i<9;i++){
+    const div = document.createElement('div');
+    div.className = 'candle ' + (i===cursedIndex ? 'cursed' : 'flicker');
+    div.style.animationDelay = (Math.random()*1.5)+'s';
+    div.textContent = '🕯️';
+    div.onclick = () => {
+      if (i===cursedIndex){
+        show('stage-2');
+        reportProgress(team, 2);
+      } else {
+        div.classList.add('shake');
+        $('warn-1').textContent = '아니다... 다른 촛불이다.';
+        setTimeout(()=>div.classList.remove('shake'), 400);
+      }
+    };
+    grid.appendChild(div);
+  }
+}
+
+/* ---- Stage 2: code input ---- */
+$('submit-2').onclick = () => {
+  const v = $('code-2').value.trim();
+  if (v === CONFIG.stage2Answer){
+    show('stage-3'); initStage3(); reportProgress(team, 3);
+  } else {
+    $('warn-2').textContent = '틀렸다. 시계를 다시 보라.';
+  }
+};
+
+/* ---- Stage 3: order click ---- */
+let picked = [];
+function initStage3(){
+  picked = [];
+  const row = $('symbol-row');
+  row.innerHTML = '';
+  const pips = $('pips-3');
+  pips.innerHTML = '';
+  const keys = Object.keys(SYMBOLS).sort(()=>Math.random()-0.5);
+  keys.forEach(k=>{
+    const div = document.createElement('div');
+    div.className = 'symbol';
+    div.textContent = SYMBOLS[k];
+    div.onclick = () => pickSymbol(k, div);
+    row.appendChild(div);
+  });
+  for (let i=0;i<CONFIG.stage3Order.length;i++){
+    const p = document.createElement('div');
+    p.className = 'pip';
+    pips.appendChild(p);
+  }
+}
+function pickSymbol(k, el){
+  const expected = CONFIG.stage3Order[picked.length];
+  if (k === expected){
+    picked.push(k);
+    el.classList.add('picked');
+    $('pips-3').children[picked.length-1].classList.add('on');
+    if (picked.length === CONFIG.stage3Order.length){
+      setTimeout(()=>{ show('stage-4'); reportProgress(team, 4); }, 400);
+    }
+  } else {
+    $('warn-3').textContent = '순서가 틀렸다. 처음부터 다시.';
+    document.querySelectorAll('#symbol-row .symbol').forEach(s=>s.classList.remove('picked'));
+    document.querySelectorAll('#pips-3 .pip').forEach(p=>p.classList.remove('on'));
+    picked = [];
+  }
+}
+
+/* ---- Stage 4: final code ---- */
+$('submit-4').onclick = () => {
+  const v = $('code-4').value.trim();
+  if (v === CONFIG.stage4Answer){
+    show('stage-complete');
+    const now = new Date();
+    $('complete-time').textContent = '탈출 시각: ' + now.toLocaleTimeString('ko-KR');
+    reportProgress(team, 5, { completed:true, completedAt: Date.now() });
+  } else {
+    $('warn-4').textContent = '코드가 맞지 않는다...';
+  }
+};
+
+/* ---- Ambient ash ---- */
+const ashEl = $('ash');
+for (let i=0;i<28;i++){
+  const e = document.createElement('div');
+  e.className = 'ember';
+  e.style.left = Math.random()*100 + 'vw';
+  e.style.setProperty('--drift', (Math.random()*60-30)+'px');
+  e.style.animationDuration = (6+Math.random()*8)+'s';
+  e.style.animationDelay = (Math.random()*8)+'s';
+  ashEl.appendChild(e);
+}
+</script>
+</body>
+</html>
