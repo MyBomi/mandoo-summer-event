@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>바보만두 당첨</title>
+<link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body>
+  <main class="stage fail-stage">
+    <div class="fail-glyph">✕</div>
+    <span class="chapter-tag" style="border-color: rgba(224,90,80,0.35); color: var(--danger-bright); background: rgba(224,90,80,0.08);">오답입니다</span>
+
+    <p class="story">차가운 정적만이 흐른다. 
+      다시 한번 힌트를 살펴보고, 정확한 답을 찾아보자.</p>
+
+    <div class="footer-nav" style="justify-content:center; gap:14px;">
+      <button class="btn" id="back-btn" type="button">이전 화면으로 돌아가기</button>
+      <a class="btn btn-secondary" href="../index.html">처음부터 다시 시작</a>
+    </div>
+  </main>
+
+  <p class="brand-footer">만두의 여름 휴가 · 모그리 따끈따끈 <<만두>></p>
+
+  <script>
+    document.getElementById("back-btn").addEventListener("click", () => {
+      if (document.referrer && document.referrer.includes(window.location.host)) {
+        window.location.href = document.referrer;
+      } else {
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>만두의 여름 휴가 - 최만두의 DM</title>
+<link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body>
+  <main class="stage">
+    <span class="chapter-tag">CHAPTER 3. 최만두와의 대화</span>
+    <h1 class="title">현관문 아래, 편지 한 통</h1>
+
+    <p class="story">편지를 남긴 이는 <strong>'최만두'</strong>. 편지에 적힌 연락처로 조심스레 말을 걸어보았다.</p>
+
+    <div class="art-slot" style="min-height:120px;">
+      <span class="slot-label">[ 편지 / 최만두 프로필 이미지 자리 ]</span>
+      <span class="slot-desc">assets/img/choi-mandu.jpg 로 교체하세요</span>
+    </div>
+
+    <div class="chat-log" id="chat-log"></div>
+
+    <div id="chat-continue" style="display:none; text-align:center; margin-top:8px;">
+      <button id="continue-btn" class="btn-block">다음 이야기로</button>
+    </div>
+  </main>
+
+  <p class="brand-footer">만두의 여름 휴가 · 모그리 따끈따끈 <<만두>></p>
+
+  <script>
+    // 채팅 메시지 순차 출력 연출
+    const messages = [
+      { who: "them", name: "최만두", text: "제 친구들 좀 구해 주세요… 며칠 전 폐가 체험을 하러 갔었는데, 저희 셋 다 무사히 탈출했었어요." },
+      { who: "them", name: "최만두", text: "근데 그 뒤로 이상한 일이 벌어졌어요. 두 친구가 감쪽같이 사라졌어요." },
+      { who: "them", name: "최만두", text: "더 이상한 건, 아무도 그들을 기억하지 못한다는 거예요. 훈련생들도, 가족들마저도요." },
+      { who: "me", name: "나", text: "폐가에 들어갔기 때문이라면 당신도 잊혀야 했을 텐데… 왜 당신만 멀쩡한 거죠?" },
+      { who: "them", name: "최만두", text: "한 가지 짚이는 데가 있긴 해요. 애들은 지하에 내려갔었고, 저는 무서운 걸 싫어해서 1층에만 있었거든요." },
+      { who: "them", name: "최만두", text: "그래도 걔네 금방 올라왔어요. 진짜 별일 없었다고요. 아, 근데 평소보다 표정이 좀 어두웠던 것 같기도 해요." },
+      { who: "them", name: "최만두", text: "이런 거 하고 나면 재밌다고 펄쩍펄쩍 뛰던 애들인데, 어땠냐고 물어봐도 대답을 안 하더라고요. 혹시 그때부터 문제였던 걸까요?" },
+      { who: "them", name: "최만두", text: "이건 애들을 찾으러 다시 폐가에 들어갔을 때, 지하 계단에서 주웠던 거예요. 단서가 될 수 있을까요?" },
+    ];
+
+    const log = document.getElementById("chat-log");
+    let i = 0;
+
+    function showNext() {
+      if (i >= messages.length) {
+        document.getElementById("chat-continue").style.display = "block";
+        return;
+      }
+      const m = messages[i++];
+      const bubble = document.createElement("div");
+      bubble.className = "chat-bubble " + (m.who === "me" ? "me" : "them");
+      bubble.innerHTML = `<span class="chat-name">${m.name}</span>${m.text}`;
+      log.appendChild(bubble);
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+      setTimeout(showNext, 900);
+    }
+
+    setTimeout(showNext, 400);
+
+    document.getElementById("continue-btn").addEventListener("click", () => {
+      window.location.href = "../tempest/";
+    });
+  </script>
+</body>
+</html>

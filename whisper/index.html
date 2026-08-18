@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>만두의 여름 휴가 - 라케티카 대삼림</title>
+<link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body>
+  <main class="stage">
+    <span class="chapter-tag">CHAPTER 5. 라케티카 대삼림 - 영혼의 보주</span>
+    <h1 class="title">사튀아 습지, 저주의 목소리</h1>
+
+    <p class="story">목적지에 도달하자 누군가 음산한 목소리로 저주의 주문을 외우고 있다.
+저주를 멈출 방법을 찾아 여러 선택지를 시도해 보지만... 과연 무엇이 통할까?</p>
+
+    <div class="art-slot" style="min-height:160px;">
+      <span class="slot-label">[ 주술사 / 영혼의 보주 이미지 자리 ]</span>
+      <span class="slot-desc">assets/img/curse.jpg 로 교체하세요</span>
+    </div>
+
+    <div class="choice-grid" id="choice-grid">
+      <button class="choice-btn" data-correct="false">"저주를 거두어 주십시오, 제발!"</button>
+      <button class="choice-btn" data-correct="false">보주를 향해 정화 마법을 시전한다</button>
+      <button class="choice-btn" data-correct="false">"저는 그저 지나가던 나그네입니다..."</button>
+      <button class="choice-btn" data-correct="true">"100억 길을 드리겠습니다."</button>
+      <button class="choice-btn" data-correct="false">칼을 뽑아 든다</button>
+      <button class="choice-btn" data-correct="false">조용히 뒷걸음질 쳐서 도망간다</button>
+    </div>
+
+    <div class="choice-feedback" id="choice-feedback"></div>
+  </main>
+
+  <p class="brand-footer">만두의 여름 휴가 · 모그리 따끈따끈 <<만두>></p>
+
+  <script>
+    const buttons = document.querySelectorAll(".choice-btn");
+    const feedback = document.getElementById("choice-feedback");
+    let locked = false;
+
+    const failLines = [
+      "주술사가 코웃음을 친다. \"그런 걸로는 어림도 없지.\"",
+      "저주의 목소리가 더 커진다. 통하지 않는 듯하다.",
+      "아무 반응이 없다. 다른 방법을 찾아야 할 것 같다.",
+      "주술사가 손을 내젓는다. \"부질없는 짓이군.\""
+    ];
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (locked) return;
+        const correct = btn.dataset.correct === "true";
+
+        if (correct) {
+          locked = true;
+          btn.classList.add("correct");
+          feedback.textContent = "주술사가 씨익 웃으며 손을 뻗어 길을 받아 챙긴다. \"이번만은... 특별히 살려주지.\"";
+          buttons.forEach((b) => { if (b !== btn) b.style.opacity = 0.35; b.disabled = true; });
+          setTimeout(() => {
+            window.location.href = "../ending/";
+          }, 1800);
+        } else {
+          btn.classList.remove("wrong");
+          void btn.offsetWidth;
+          btn.classList.add("wrong");
+          feedback.textContent = failLines[Math.floor(Math.random() * failLines.length)];
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>만두의 여름 휴가 - 폐가</title>
+<link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body>
+  <main class="stage">
+    <span class="chapter-tag">CHAPTER 2</span>
+    <p class="story">겨우 도착한 곳에는 '폐가'라는 말이 딱 어울리는 집 한 채가 서 있다. 아무래도 들어가야 할 것 같다.</p>
+
+    <div class="art-slot" style="min-height:0; aspect-ratio: 800 / 500; max-width: 600px; margin-left:auto; margin-right:auto;">
+      <img src="../assets/img/haunted-house.jpg" alt="폐가 전경" />
+    </div>
+
+    <p class="story" style="margin-bottom:10px;">지하로 내려가기 전, 아래 방법으로 시야를 1인칭으로 전환하세요.</p>
+
+    <div class="key-guide">
+      <div class="key-cap">
+        <kbd>Scroll&nbsp;Lock</kbd>
+        <span>HUD(화면 UI)를 끕니다</span>
+      </div>
+      <div class="key-cap">
+        <kbd>Home</kbd>
+        <span>1인칭 시점으로 전환합니다</span>
+      </div>
+    </div>
+
+    <p class="story">미로 끝에 도착하자 오래된 일기장 한 권이 놓여 있다. '김교자'와 '이딤섬'이라는 두 사람이 남긴 메시지인데, 내용이 어딘가 수상하다.</p>
+
+    <p class="story">찜찜한 기분이 들었지만 통장에 꽂힐 100억 길을 생각하며 방명록에 메시지를 남긴 뒤, 다시 미로를 빠져나와 1층으로 올라왔다.
+집안을 다시 찬찬히 살펴보던 그때, 관찰력이 좋은 당신은 <strong>현관문</strong> 밑에 삐죽 튀어나와 있는 편지 한 통을 발견한다.
+
+<strong>[제 친구들 좀 구해 주세요!]</strong></p>
+
+    <form class="answer-form" id="quiz2-form">
+      <label for="quiz2-input">편지가 끼워져 있던 곳은 어디였을까요? (영문 단어로 입력)</label>
+      <div class="answer-row">
+        <input type="text" id="quiz2-input" placeholder="정답을 입력하세요" autocomplete="off" />
+        <button type="submit">1층으로</button>
+      </div>
+      <div class="error-msg" id="quiz2-error"></div>
+    </form>
+  </main>
+
+  <p class="brand-footer">만두의 여름 휴가 · 모그리 따끈따끈 <<만두>></p>
+
+  <script src="../assets/answer.js"></script>
+  <script>
+    initAnswerForm({
+      formId: "quiz2-form",
+      inputId: "quiz2-input",
+      errorId: "quiz2-error",
+      answers: ["door"],
+      nextUrl: "../door/",
+      failUrl: "../fail/"
+    });
+  </script>
+</body>
+</html>

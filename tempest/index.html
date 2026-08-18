@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>만두의 여름 휴가 - 야크텔 밀림</title>
+<link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body>
+  <main class="stage">
+    <span class="chapter-tag">CHAPTER 4. 야크텔 밀림 - 껍데기만 남은 친구</span>
+    <h1 class="title">동굴 깊은 곳, 검은 로브의 인물</h1>
+
+    <div class="note-card">
+      <span class="speaker">퀴즈 3</span> 흔적을 따라서
+      <span class="msg-time">목적지: 야크텔 밀림 - 깊푸른 세슈드로스 (하늘심연 세노테 입구)</span>
+    </div>
+
+    <p class="story">좌표를 따라 동굴 깊은 곳으로 들어가니, 검은 로브를 뒤집어쓴 인물이 보인다. 또 다른 피해자인 듯하다.
+망부석처럼 멍하게 서 있는 그에게 다가가려 했지만, 안개 속에서 자꾸만 시야가 흐트러진다.</p>
+
+    <p class="story dim">아래 조각난 장면들을 원래대로 맞추면, 그가 서 있던 정확한 위치가 드러날 것이다.</p>
+
+    <div class="puzzle-wrap">
+      <div class="puzzle-board" id="puzzle-board"></div>
+      <div class="puzzle-status" id="puzzle-status">조각을 클릭해서 빈 칸으로 이동시키세요.</div>
+      <button id="shuffle-btn" class="btn-secondary" type="button">다시 섞기</button>
+    </div>
+
+    <div class="npc-reveal" id="npc-reveal">
+      <p class="story" style="text-align:center; margin-bottom:6px;">안개가 걷히자, 로브를 쓴 인물의 형상이 또렷해진다.</p>
+      <div class="npc-figure" id="npc-figure" title="말을 건다">🕯️</div>
+      <p class="dim" style="font-size:13px;">그에게 다가가 귓속말로 특정 키워드를 보내자, 잠시 눈빛이 돌아오며 힌트를 중얼거린다.</p>
+    </div>
+
+    <div id="answer-section" style="display:none;">
+      <p class="story">
+        <strong>(※ 실제 게임 내에서 진행자가 보내는 귓속말/암호를 받아 아래에 입력하세요)</strong><br>
+        다음 페이지에 접속하자, 갇힌 영혼들이 모여있는 진짜 장소를 가리키는 암호가 나타난다.
+      </p>
+
+      <div class="note-card">
+        <span class="speaker">퀴즈 4</span> 영혼이 갇힌 곳
+        <span class="msg-time">목적지: 라케티카 대삼림 - 사튀아 습지 (깨진 보물알)</span>
+      </div>
+
+      <form class="answer-form" id="quiz4-form">
+        <label for="quiz4-input">귓속말로 전달받은 암호를 입력하세요</label>
+        <div class="answer-row">
+          <input type="text" id="quiz4-input" placeholder="정답을 입력하세요" autocomplete="off" />
+          <button type="submit">전송</button>
+        </div>
+        <div class="error-msg" id="quiz4-error"></div>
+      </form>
+
+      <div class="hint-box">
+        <b>진행자 안내</b><br>
+        현재 예시 정답은 <b>귓속말답장</b> 입니다. 실제 진행 시 인게임에서 참가자에게 귓속말로 전달할 암호로 바꿔서 사용하세요.
+      </div>
+    </div>
+  </main>
+
+  <p class="brand-footer">만두의 여름 휴가 · 모그리 따끈따끈 <<만두>></p>
+
+  <script src="../assets/answer.js"></script>
+  <script>
+    /* ===== 4x4 슬라이드 퍼즐 (숫자 타일 버전, 이미지 있으면 CSS로 교체 가능) ===== */
+    const SIZE = 4;
+    const board = document.getElementById("puzzle-board");
+    const statusEl = document.getElementById("puzzle-status");
+    let tiles = [];       // 현재 배치된 값 (0 = 빈칸)
+    let solved = false;
+
+    // 이미지를 쓰고 싶다면: 아래 TILE_IMAGE에 경로를 넣고,
+    // .puzzle-tile 스타일이 자동으로 배경을 분할해서 보여줍니다.
+    const TILE_IMAGE = "../assets/img/tempest-npc.png";
+
+    function createSolvedArray() {
+      const arr = [];
+      for (let i = 1; i < SIZE * SIZE; i++) arr.push(i);
+      arr.push(0);
+      return arr;
+    }
+
+    function isSolvable(arr) {
+      const flat = arr.filter((v) => v !== 0);
+      let inversions = 0;
+      for (let i = 0; i < flat.length; i++) {
+        for (let j = i + 1; j < flat.length; j++) {
+          if (flat[i] > flat[j]) inversions++;
+        }
+      }
+      const emptyRowFromBottom = SIZE - Math.floor(arr.indexOf(0) / SIZE);
+      if (SIZE % 2 === 0) {
+        return (inversions + emptyRowFromBottom) % 2 === 1;
+      }
+      return inversions % 2 === 0;
+    }
+
+    function shuffle() {
+      let arr;
+      do {
+        arr = createSolvedArray();
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+      } while (!isSolvable(arr) || isSolved(arr));
+      tiles = arr;
+      solved = false;
+      render();
+      statusEl.textContent = "조각을 클릭해서 빈 칸으로 이동시키세요.";
+    }
+
+    function isSolved(arr) {
+      for (let i = 0; i < arr.length - 1; i++) {
+        if (arr[i] !== i + 1) return false;
+      }
+      return arr[arr.length - 1] === 0;
+    }
+
+    function render() {
+      board.innerHTML = "";
+      tiles.forEach((val, idx) => {
+        const cell = document.createElement("div");
+        if (val === 0) {
+          cell.className = "puzzle-tile empty";
+        } else {
+          cell.className = "puzzle-tile";
+          cell.textContent = val;
+          if (TILE_IMAGE) {
+            const originalIdx = val - 1;
+            const col = originalIdx % SIZE;
+            const row = Math.floor(originalIdx / SIZE);
+            cell.style.setProperty("--tile-img", `url(${TILE_IMAGE})`);
+            cell.style.setProperty("--bx", `${(col / (SIZE - 1)) * 100}%`);
+            cell.style.setProperty("--by", `${(row / (SIZE - 1)) * 100}%`);
+            cell.textContent = "";
+          }
+          cell.addEventListener("click", () => tryMove(idx));
+        }
+        board.appendChild(cell);
+      });
+    }
+
+    function tryMove(idx) {
+      if (solved) return;
+      const emptyIdx = tiles.indexOf(0);
+      const idxRow = Math.floor(idx / SIZE), idxCol = idx % SIZE;
+      const emptyRow = Math.floor(emptyIdx / SIZE), emptyCol = emptyIdx % SIZE;
+      const adjacent =
+        (idxRow === emptyRow && Math.abs(idxCol - emptyCol) === 1) ||
+        (idxCol === emptyCol && Math.abs(idxRow - emptyRow) === 1);
+      if (!adjacent) return;
+
+      [tiles[idx], tiles[emptyIdx]] = [tiles[emptyIdx], tiles[idx]];
+      render();
+
+      if (isSolved(tiles)) {
+        solved = true;
+        statusEl.textContent = "안개가 걷히고 있다...";
+        setTimeout(() => {
+          document.getElementById("npc-reveal").classList.add("show");
+          document.getElementById("npc-reveal").scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 500);
+      }
+    }
+
+    document.getElementById("shuffle-btn").addEventListener("click", shuffle);
+    shuffle();
+
+    document.getElementById("npc-figure").addEventListener("click", function () {
+      this.style.pointerEvents = "none";
+      this.style.filter = "brightness(1.4)";
+      const section = document.getElementById("answer-section");
+      section.style.display = "block";
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    initAnswerForm({
+      formId: "quiz4-form",
+      inputId: "quiz4-input",
+      errorId: "quiz4-error",
+      answers: ["귓속말답장"],
+      nextUrl: "../whisper/",
+      failUrl: "../fail/"
+    });
+  </script>
+</body>
+</html>

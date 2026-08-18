@@ -1,0 +1,584 @@
+/* ============================================================
+   만두의 여름 휴가 이벤트 - 공용 스타일
+   테마: FFXIV 다크 판타지 / 코스타 델 솔 & 폐가의 대비
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gowun+Batang:wght@400;700&family=Nanum+Myeongjo:wght@400;700;800&display=swap');
+
+:root {
+  --bg-void: #0b0e14;
+  --bg-panel: #14181f;
+  --bg-panel-2: #1b212b;
+  --border-faint: rgba(198, 168, 106, 0.25);
+  --gold: #c6a86a;
+  --gold-bright: #e9cd8f;
+  --ink: #eae4d6;
+  --ink-dim: #a9a294;
+  --danger: #b0453f;
+  --danger-bright: #e2685f;
+  --success: #6fae8b;
+  --shadow: rgba(0, 0, 0, 0.55);
+  --font-head: 'Black Han Sans', 'Nanum Myeongjo', sans-serif;
+  --font-body: 'Gowun Batang', 'Nanum Myeongjo', serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: var(--bg-void);
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+body {
+  position: relative;
+  overflow-x: hidden;
+  background:
+    radial-gradient(ellipse at 20% -10%, rgba(198,168,106,0.08), transparent 45%),
+    radial-gradient(ellipse at 80% 110%, rgba(120,20,20,0.10), transparent 45%),
+    var(--bg-void);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 18px 60px;
+}
+
+/* 은은하게 떠다니는 안개/먼지 파티클 느낌의 배경 */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0px, transparent 1px, transparent 2px);
+  z-index: 0;
+}
+
+.stage {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 720px;
+  background: linear-gradient(180deg, var(--bg-panel), var(--bg-panel-2));
+  border: 1px solid var(--border-faint);
+  border-radius: 14px;
+  box-shadow: 0 30px 70px var(--shadow), 0 0 0 1px rgba(0,0,0,0.4) inset;
+  padding: 42px 36px 38px;
+  animation: fadeUp 0.7s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.chapter-tag {
+  display: inline-block;
+  font-family: var(--font-head);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+  border: 1px solid var(--border-faint);
+  border-radius: 999px;
+  padding: 5px 14px;
+  margin-bottom: 18px;
+  background: rgba(198,168,106,0.06);
+}
+
+h1.title {
+  font-family: var(--font-head);
+  font-size: 28px;
+  line-height: 1.4;
+  color: var(--gold-bright);
+  margin: 0 0 18px;
+  text-shadow: 0 2px 12px rgba(198,168,106,0.25);
+}
+
+.story {
+  font-size: 15.5px;
+  line-height: 1.9;
+  color: var(--ink);
+  white-space: pre-line;
+  margin-bottom: 26px;
+}
+
+.story strong {
+  color: var(--gold-bright);
+}
+
+.dim {
+  color: var(--ink-dim);
+}
+
+/* 이미지/자료 자리 - 나중에 실제 이미지로 교체 */
+.art-slot {
+  width: 100%;
+  min-height: 220px;
+  border: 1.5px dashed var(--border-faint);
+  border-radius: 10px;
+  background: rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--ink-dim);
+  font-size: 13px;
+  text-align: center;
+  margin: 20px 0 26px;
+  overflow: hidden;
+  position: relative;
+}
+
+.art-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+}
+
+.art-slot .slot-label {
+  font-family: var(--font-head);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--gold);
+  z-index: 1;
+}
+
+.art-slot .slot-desc {
+  z-index: 1;
+  max-width: 80%;
+  line-height: 1.6;
+}
+
+/* 대화/편지/일기장 카드 */
+.note-card {
+  background: rgba(0,0,0,0.28);
+  border: 1px solid var(--border-faint);
+  border-radius: 10px;
+  padding: 18px 20px;
+  margin: 14px 0;
+  font-size: 14.5px;
+  line-height: 1.85;
+}
+
+.note-card .speaker {
+  font-family: var(--font-head);
+  color: var(--gold);
+  font-size: 13px;
+  margin-right: 6px;
+}
+
+.note-card .msg-time {
+  color: var(--ink-dim);
+  font-size: 11.5px;
+  display: block;
+  margin: 10px 0 4px;
+  letter-spacing: 0.05em;
+}
+
+.note-card .corrupted {
+  color: var(--danger-bright);
+  letter-spacing: 0.03em;
+  filter: blur(0.2px);
+}
+
+/* 채팅 스타일 (3p 최만두 DM) */
+.chat-log {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0 28px;
+}
+
+.chat-bubble {
+  max-width: 82%;
+  padding: 12px 15px;
+  border-radius: 14px;
+  font-size: 14.5px;
+  line-height: 1.7;
+  animation: fadeUp 0.5s ease both;
+}
+
+.chat-bubble.them {
+  align-self: flex-start;
+  background: var(--bg-panel-2);
+  border: 1px solid var(--border-faint);
+  border-bottom-left-radius: 4px;
+}
+
+.chat-bubble.me {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #3a4b6e, #2c3958);
+  border: 1px solid rgba(140,170,255,0.25);
+  border-bottom-right-radius: 4px;
+  color: #eef1ff;
+}
+
+.chat-name {
+  display: block;
+  font-family: var(--font-head);
+  font-size: 11.5px;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+
+/* 입력 폼 */
+.answer-form {
+  margin-top: 8px;
+}
+
+.answer-form label {
+  display: block;
+  font-size: 12.5px;
+  color: var(--ink-dim);
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+
+.answer-row {
+  display: flex;
+  gap: 10px;
+}
+
+.answer-row input[type="text"] {
+  flex: 1;
+  background: rgba(0,0,0,0.35);
+  border: 1.5px solid var(--border-faint);
+  border-radius: 8px;
+  padding: 13px 15px;
+  font-size: 16px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  letter-spacing: 0.05em;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.answer-row input[type="text"]::placeholder {
+  color: rgba(169,162,148,0.55);
+}
+
+.answer-row input[type="text"]:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(198,168,106,0.15);
+}
+
+button, .btn {
+  font-family: var(--font-head);
+  font-size: 14.5px;
+  letter-spacing: 0.03em;
+  color: #14181f;
+  background: linear-gradient(180deg, var(--gold-bright), var(--gold));
+  border: none;
+  border-radius: 8px;
+  padding: 13px 22px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(198,168,106,0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+  white-space: nowrap;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button:hover, .btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 10px 24px rgba(198,168,106,0.35);
+}
+
+button:active, .btn:active {
+  transform: translateY(0);
+}
+
+button.btn-secondary, .btn.btn-secondary {
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--border-faint);
+  box-shadow: none;
+}
+
+button.btn-secondary:hover, .btn.btn-secondary:hover {
+  border-color: var(--gold);
+  color: var(--gold-bright);
+}
+
+button.btn-danger {
+  background: linear-gradient(180deg, var(--danger-bright), var(--danger));
+  color: #1a0d0c;
+}
+
+.btn-block {
+  width: 100%;
+  display: flex;
+}
+
+.error-msg {
+  color: var(--danger-bright);
+  font-size: 13px;
+  margin-top: 10px;
+  min-height: 18px;
+  letter-spacing: 0.02em;
+}
+
+.error-msg.show {
+  animation: shake 0.35s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.hint-box {
+  margin-top: 22px;
+  border-left: 2px solid var(--border-faint);
+  padding-left: 14px;
+  font-size: 13px;
+  color: var(--ink-dim);
+  line-height: 1.7;
+}
+
+.hint-box b {
+  color: var(--gold);
+}
+
+.footer-nav {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.brand-footer {
+  margin-top: 26px;
+  text-align: center;
+  font-size: 11px;
+  color: rgba(169,162,148,0.5);
+  letter-spacing: 0.08em;
+  z-index: 1;
+  position: relative;
+}
+
+/* 키 안내용 뱃지 (2p 스크롤락/홈키) */
+.key-guide {
+  display: flex;
+  gap: 12px;
+  margin: 22px 0;
+  flex-wrap: wrap;
+}
+
+.key-cap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--border-faint);
+  border-radius: 10px;
+  padding: 10px 16px;
+  flex: 1;
+  min-width: 220px;
+}
+
+.key-cap kbd {
+  font-family: var(--font-head);
+  background: linear-gradient(180deg, #2a3140, #1a1f28);
+  border: 1px solid rgba(198,168,106,0.4);
+  border-bottom-width: 3px;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 13px;
+  color: var(--gold-bright);
+}
+
+.key-cap span {
+  font-size: 12.5px;
+  color: var(--ink-dim);
+  line-height: 1.5;
+}
+
+/* 슬라이드 퍼즐 (4p) */
+.puzzle-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin: 22px 0;
+}
+
+.puzzle-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 4px;
+  width: min(100%, 340px);
+  aspect-ratio: 1 / 1;
+  background: rgba(0,0,0,0.4);
+  border: 1.5px solid var(--border-faint);
+  border-radius: 10px;
+  padding: 4px;
+}
+
+.puzzle-tile {
+  background: linear-gradient(160deg, #2b3345, #1a2030);
+  border: 1px solid rgba(198,168,106,0.2);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-head);
+  font-size: 15px;
+  color: var(--gold-bright);
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.12s ease, filter 0.12s ease;
+  background-size: 400% 400%;
+  background-position: var(--bx, 0%) var(--by, 0%);
+  background-image: var(--tile-img, none);
+}
+
+.puzzle-tile:hover {
+  filter: brightness(1.15);
+}
+
+.puzzle-tile.empty {
+  background: transparent;
+  border: 1px dashed rgba(198,168,106,0.15);
+  cursor: default;
+}
+
+.puzzle-status {
+  font-size: 13px;
+  color: var(--ink-dim);
+  min-height: 18px;
+}
+
+.npc-reveal {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 6px;
+  animation: fadeUp 0.6s ease both;
+}
+
+.npc-reveal.show {
+  display: flex;
+}
+
+.npc-figure {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #3a3a44, #101014 70%);
+  border: 1.5px solid var(--border-faint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  cursor: pointer;
+  box-shadow: 0 0 30px rgba(198,168,106,0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.npc-figure:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 40px rgba(198,168,106,0.3);
+}
+
+/* 5p 선택지 퍼즐 */
+.choice-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 22px 0;
+}
+
+@media (max-width: 480px) {
+  .choice-grid { grid-template-columns: 1fr; }
+}
+
+.choice-btn {
+  background: var(--bg-panel-2);
+  border: 1.5px solid var(--border-faint);
+  color: var(--ink);
+  border-radius: 10px;
+  padding: 16px 14px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, transform 0.12s, background 0.15s;
+}
+
+.choice-btn:hover {
+  border-color: var(--gold);
+  transform: translateY(-1px);
+}
+
+.choice-btn.correct {
+  background: linear-gradient(135deg, rgba(111,174,139,0.25), rgba(111,174,139,0.08));
+  border-color: var(--success);
+  color: var(--gold-bright);
+}
+
+.choice-btn.wrong {
+  animation: shake 0.35s ease;
+  border-color: var(--danger);
+}
+
+.choice-feedback {
+  min-height: 20px;
+  font-size: 13px;
+  color: var(--ink-dim);
+  margin-top: 4px;
+}
+
+/* 실패 페이지 (7p) */
+.fail-stage {
+  text-align: center;
+}
+
+.fail-glyph {
+  font-family: var(--font-head);
+  font-size: 64px;
+  color: var(--danger-bright);
+  text-shadow: 0 0 40px rgba(224,90,80,0.4);
+  margin-bottom: 6px;
+  letter-spacing: 0.05em;
+}
+
+/* 엔딩 페이지 */
+.ending-stage {
+  text-align: center;
+}
+
+.ending-glyph {
+  font-size: 44px;
+  margin-bottom: 6px;
+}
+
+.credit {
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: var(--ink-dim);
+}
+
+@media (max-width: 560px) {
+  .stage { padding: 30px 20px 28px; }
+  h1.title { font-size: 22px; }
+  .answer-row { flex-direction: column; }
+}
