@@ -1,6 +1,121 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<style>
+:root { --mandoo-portrait: url(../assets/img/mandoo-img.png); }
+
+.glitch-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #05070c;
+}
+
+.glitch-wrap .glitch-base {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  animation: glitch-jitter 6s infinite steps(1, end);
+}
+
+.glitch-wrap .glitch-slice {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image: var(--mandoo-portrait);
+  background-size: cover;
+  background-position: center;
+  mix-blend-mode: screen;
+  opacity: 0;
+  pointer-events: none;
+}
+.glitch-wrap .glitch-slice.r {
+  filter: sepia(1) saturate(8) hue-rotate(-50deg) brightness(1.1);
+  animation: glitch-slice-r 6s infinite steps(1, end);
+}
+.glitch-wrap .glitch-slice.b {
+  filter: sepia(1) saturate(8) hue-rotate(155deg) brightness(1.1);
+  animation: glitch-slice-b 6s infinite steps(1, end);
+}
+
+.glitch-wrap .glitch-static {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  mix-blend-mode: overlay;
+  opacity: 0;
+  pointer-events: none;
+  animation: glitch-static 6s infinite steps(1, end);
+}
+
+.glitch-wrap .glitch-scan {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(to bottom, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 1px, transparent 1px, transparent 3px);
+  mix-blend-mode: multiply;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.glitch-wrap .glitch-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%);
+}
+
+@keyframes glitch-jitter {
+  0%, 100% { transform: translate(0, 0) scale(1); filter: none; }
+  46%      { transform: translate(0, 0); }
+  47%      { transform: translate(-6px, 2px) scale(1.01); filter: contrast(1.3) brightness(0.85); }
+  48%      { transform: translate(4px, -2px); }
+  49%      { transform: translate(0, 0) scale(1); filter: none; }
+  87%      { transform: translate(0, 0); }
+  88%      { transform: translate(5px, 0) skewX(2deg); filter: contrast(1.4) brightness(0.8); }
+  90%      { transform: translate(0, 0) scale(1); filter: none; }
+}
+@keyframes glitch-slice-r {
+  0%, 100% { opacity: 0; clip-path: inset(0 0 0 0); transform: translateX(0); }
+  46%      { opacity: 0; }
+  47%      { opacity: 0.7; clip-path: inset(20% 0 55% 0); transform: translateX(-6px); }
+  48%      { opacity: 0.5; clip-path: inset(60% 0 10% 0); transform: translateX(4px); }
+  49%      { opacity: 0; }
+  87%      { opacity: 0; }
+  88%      { opacity: 0.6; clip-path: inset(10% 0 70% 0); transform: translateX(5px); }
+  90%      { opacity: 0; }
+}
+@keyframes glitch-slice-b {
+  0%, 100% { opacity: 0; clip-path: inset(0 0 0 0); transform: translateX(0); }
+  46%      { opacity: 0; }
+  47%      { opacity: 0.6; clip-path: inset(55% 0 15% 0); transform: translateX(6px); }
+  48%      { opacity: 0.4; clip-path: inset(5% 0 65% 0); transform: translateX(-4px); }
+  49%      { opacity: 0; }
+  87%      { opacity: 0; }
+  88%      { opacity: 0.5; clip-path: inset(65% 0 5% 0); transform: translateX(-5px); }
+  90%      { opacity: 0; }
+}
+@keyframes glitch-static {
+  0%, 100% { opacity: 0; }
+  47%      { opacity: 0.5; }
+  49%      { opacity: 0; }
+  88%      { opacity: 0.4; }
+  90%      { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glitch-wrap .glitch-base,
+  .glitch-wrap .glitch-slice,
+  .glitch-wrap .glitch-static {
+    animation: none !important;
+  }
+}
+</style>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>만두의 여름 휴가 3</title>
@@ -13,9 +128,15 @@
 
     <p class="story">편지를 남긴 이는 <strong>'최만두'</strong>. 편지에 적힌 연락처로 조심스레 말을 걸어보았다.</p>
 
-    <div class="art-slot" style="min-height:120px;">
-      <span class="slot-label">[ 편지 / 최만두 프로필 이미지 자리 ]</span>
-      <span class="slot-desc">assets/img/choi-mandu.jpg 로 교체하세요</span>
+    <div class="art-slot" style="min-height:0; aspect-ratio: 800 / 500; max-width: 600px; margin-left:auto; margin-right:auto; position:relative; overflow:hidden;">
+      <div class="glitch-wrap">
+        <img src="../assets/img/mandoo-img.png" alt="최만두의 프로필" class="glitch-base">
+        <div class="glitch-slice r"></div>
+        <div class="glitch-slice b"></div>
+        <div class="glitch-static"></div>
+        <div class="glitch-scan"></div>
+        <div class="glitch-vignette"></div>
+      </div>
     </div>
 
     <div class="chat-log" id="chat-log"></div>
