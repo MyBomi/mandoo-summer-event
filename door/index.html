@@ -54,10 +54,10 @@
       bubble.innerHTML = `<span class="chat-name">${m.name}</span>${m.text}`;
       log.appendChild(bubble);
       window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-      setTimeout(showNext, 900);
+      setTimeout(showNext, 3000);
     }
 
-    setTimeout(showNext, 400);
+    setTimeout(showNext, 700);
 
     document.getElementById("continue-btn").addEventListener("click", () => {
       window.location.href = "../tempest/";
