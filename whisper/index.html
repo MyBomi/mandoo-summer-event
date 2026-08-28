@@ -19,13 +19,43 @@
       <span class="slot-desc">assets/img/curse.jpg 로 교체하세요</span>
     </div>
 
-    <div class="choice-grid" id="choice-grid">
-      <button class="choice-btn" data-correct="false">"저주를 거두어 주십시오, 제발!"</button>
-      <button class="choice-btn" data-correct="false">보주를 향해 정화 마법을 시전한다</button>
-      <button class="choice-btn" data-correct="false">"저는 그저 지나가던 나그네입니다..."</button>
-      <button class="choice-btn" data-correct="true">"100억 길을 드리겠습니다."</button>
-      <button class="choice-btn" data-correct="false">칼을 뽑아 든다</button>
-      <button class="choice-btn" data-correct="false">조용히 뒷걸음질 쳐서 도망간다</button>
+    <div class="tarot-grid" id="tarot-grid">
+      <button class="tarot-card" data-correct="false" style="--n:1">
+        <span class="tarot-corner tl">✦</span>
+        <span class="tarot-numeral">Ⅰ</span>
+        <span class="tarot-text">"저주를 거두어 주십시오, 제발!"</span>
+        <span class="tarot-corner br">✦</span>
+      </button>
+      <button class="tarot-card" data-correct="false" style="--n:2">
+        <span class="tarot-corner tl">✦</span>
+        <span class="tarot-numeral">Ⅱ</span>
+        <span class="tarot-text">보주를 향해 정화 마법을 시전한다</span>
+        <span class="tarot-corner br">✦</span>
+      </button>
+      <button class="tarot-card" data-correct="false" style="--n:3">
+        <span class="tarot-corner tl">✦</span>
+        <span class="tarot-numeral">Ⅲ</span>
+        <span class="tarot-text">"저는 그저 지나가던 나그네입니다..."</span>
+        <span class="tarot-corner br">✦</span>
+      </button>
+      <button class="tarot-card" data-correct="false" style="--n:4">
+        <span class="tarot-corner tl">✦</span>
+        <span class="tarot-numeral">Ⅳ</span>
+        <span class="tarot-text">칼을 뽑아 든다</span>
+        <span class="tarot-corner br">✦</span>
+      </button>
+      <button class="tarot-card" data-correct="false" style="--n:5">
+        <span class="tarot-corner tl">✦</span>
+        <span class="tarot-numeral">Ⅴ</span>
+        <span class="tarot-text">조용히 뒷걸음질 쳐서 도망간다</span>
+        <span class="tarot-corner br">✦</span>
+      </button>
+      <button class="tarot-card tarot-sealed" id="tarot-sealed" data-correct="true" disabled>
+        <span class="tarot-corner tl">✦</span>
+        <span class="tarot-numeral">?</span>
+        <span class="tarot-text" id="tarot-sealed-text">봉인된 카드</span>
+        <span class="tarot-corner br">✦</span>
+      </button>
     </div>
 
     <div class="choice-feedback" id="choice-feedback"></div>
@@ -34,9 +64,12 @@
   <p class="brand-footer">만두의 여름 휴가 · 모그리 따끈따끈 <<만두>></p>
 
   <script>
-    const buttons = document.querySelectorAll(".choice-btn");
+    const wrongCards = document.querySelectorAll(".tarot-card:not(.tarot-sealed)");
+    const sealed = document.getElementById("tarot-sealed");
+    const sealedText = document.getElementById("tarot-sealed-text");
     const feedback = document.getElementById("choice-feedback");
     let locked = false;
+    let burnedCount = 0;
 
     const failLines = [
       "주술사가 코웃음을 친다. \"그런 걸로는 어림도 없지.\"",
@@ -45,26 +78,33 @@
       "주술사가 손을 내젓는다. \"부질없는 짓이군.\""
     ];
 
-    buttons.forEach((btn) => {
+    wrongCards.forEach((btn) => {
       btn.addEventListener("click", () => {
-        if (locked) return;
-        const correct = btn.dataset.correct === "true";
+        if (locked || btn.disabled) return;
+        btn.classList.add("wrong");
+        btn.disabled = true;
+        feedback.textContent = failLines[Math.floor(Math.random() * failLines.length)];
 
-        if (correct) {
-          locked = true;
-          btn.classList.add("correct");
-          feedback.textContent = "주술사가 씨익 웃으며 손을 뻗어 길을 받아 챙긴다. \"이번만은... 특별히 살려주지.\"";
-          buttons.forEach((b) => { if (b !== btn) b.style.opacity = 0.35; b.disabled = true; });
-          setTimeout(() => {
-            window.location.href = "../ending/";
-          }, 1800);
-        } else {
-          btn.classList.remove("wrong");
-          void btn.offsetWidth;
-          btn.classList.add("wrong");
-          feedback.textContent = failLines[Math.floor(Math.random() * failLines.length)];
+        burnedCount++;
+        if (burnedCount === wrongCards.length) {
+          sealed.disabled = false;
+          sealed.classList.add("awake");
+          sealedText.textContent = "무언가 이곳에서 은은히 떨리고 있다...";
+          feedback.textContent = "모든 말이 재가 되어 흩어지자, 봉인된 카드 한 장이 스스로 떨리기 시작한다.";
         }
       });
+    });
+
+    sealed.addEventListener("click", () => {
+      if (locked || sealed.disabled) return;
+      locked = true;
+      sealed.classList.remove("awake");
+      sealed.classList.add("correct");
+      sealedText.textContent = "\"100억 길을 드리겠습니다.\"";
+      feedback.textContent = "주술사가 씨익 웃으며 손을 뻗어 길을 받아 챙긴다. \"이번만은... 특별히 살려주지.\"";
+      setTimeout(() => {
+        window.location.href = "../ending/";
+      }, 1500);
     });
   </script>
 </body>

@@ -281,6 +281,59 @@ h1.title {
   box-shadow: 0 0 0 3px rgba(225,75,63,0.18);
 }
 
+/* 좌표(2단 소수) 입력 */
+.coord-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.coord-axis {
+  font-family: var(--font-head);
+  font-size: 13px;
+  color: var(--ink-dim);
+}
+
+.coord-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: rgba(0,0,0,0.35);
+  border: 1.5px solid var(--border-faint);
+  border-radius: 8px;
+  padding: 0 8px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.coord-group:focus-within {
+  border-color: var(--gold-bright);
+  box-shadow: 0 0 0 3px rgba(225,75,63,0.18);
+}
+
+.coord-input {
+  width: 2.1em;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 13px 2px;
+  font-size: 16px;
+  text-align: center;
+  color: var(--ink);
+  font-family: var(--font-body);
+  letter-spacing: 0.05em;
+}
+
+.coord-dot {
+  color: var(--ink-dim);
+  font-weight: bold;
+}
+
+@media (max-width: 480px) {
+  .coord-row { gap: 6px; }
+  .coord-row button[type="submit"] { width: 100%; margin-top: 4px; }
+}
+
 button, .btn {
   font-family: var(--font-head);
   font-size: 14.5px;
@@ -508,46 +561,154 @@ button.btn-danger {
   box-shadow: 0 0 40px rgba(225,75,63,0.4);
 }
 
-/* 5p 선택지 퍼즐 */
-.choice-grid {
+/* 5p 선택지 퍼즐 — 타로 카드 */
+.tarot-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin: 22px 0;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 24px 0;
 }
 
-@media (max-width: 480px) {
-  .choice-grid { grid-template-columns: 1fr; }
+@media (min-width: 640px) {
+  .tarot-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
-.choice-btn {
-  background: var(--bg-panel-2);
-  border: 1.5px solid var(--border-faint);
+@media (max-width: 420px) {
+  .tarot-grid { grid-template-columns: 1fr; }
+}
+
+.tarot-card {
+  position: relative;
+  background: radial-gradient(circle at 50% 0%, rgba(225,75,63,0.12), transparent 62%), var(--bg-panel-2);
+  border: 1px solid var(--border-faint);
+  outline: 1px solid rgba(225,75,63,0.18);
+  outline-offset: -5px;
+  border-radius: 14px;
+  min-height: 128px;
+  padding: 24px 14px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   color: var(--ink);
-  border-radius: 10px;
-  padding: 16px 14px;
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 13.5px;
   line-height: 1.5;
+  text-align: center;
   cursor: pointer;
-  text-align: left;
-  transition: border-color 0.15s, transform 0.12s, background 0.15s;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s;
+  box-shadow: 0 0 18px rgba(154,20,20,0.18);
+  animation: tarot-flicker 4.4s ease-in-out infinite;
+  animation-delay: calc(var(--n) * -0.7s);
 }
 
-.choice-btn:hover {
-  border-color: var(--gold);
-  transform: translateY(-1px);
-}
-
-.choice-btn.correct {
-  background: linear-gradient(135deg, rgba(111,174,139,0.25), rgba(111,174,139,0.08));
-  border-color: var(--success);
+.tarot-numeral {
+  font-family: var(--font-head);
+  font-size: 15px;
   color: var(--gold-bright);
+  opacity: 0.85;
 }
 
-.choice-btn.wrong {
-  animation: shake 0.35s ease;
-  border-color: var(--danger);
+.tarot-corner {
+  position: absolute;
+  font-size: 10px;
+  color: var(--gold-bright);
+  opacity: 0.5;
+}
+.tarot-corner.tl { top: 8px; left: 10px; }
+.tarot-corner.br { bottom: 8px; right: 10px; }
+
+@keyframes tarot-flicker {
+  0%, 100% { box-shadow: 0 0 18px rgba(154,20,20,0.18); }
+  50% { box-shadow: 0 0 26px rgba(154,20,20,0.32); }
+}
+
+.tarot-card:hover,
+.tarot-card:focus-visible {
+  transform: translateY(-6px) rotateZ(-1deg);
+  border-color: var(--gold-bright);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.4), 0 0 24px rgba(225,75,63,0.35);
+}
+
+.tarot-card.correct {
+  animation: tarot-ignite 0.9s ease forwards;
+  border-color: var(--success);
+}
+
+.tarot-card.wrong {
+  animation: tarot-scorch 0.5s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes tarot-ignite {
+  0% { transform: translateY(-6px) scale(1); }
+  40% {
+    transform: translateY(-14px) scale(1.07) rotateZ(-1.5deg);
+    box-shadow: 0 0 40px rgba(212,175,105,0.55);
+    background: linear-gradient(160deg, rgba(212,175,105,0.28), rgba(111,174,139,0.1));
+  }
+  100% {
+    transform: translateY(-8px) scale(1.03) rotateZ(0deg);
+    box-shadow: 0 0 55px rgba(111,174,139,0.6);
+    background: linear-gradient(160deg, rgba(111,174,139,0.25), rgba(111,174,139,0.08));
+  }
+}
+
+@keyframes tarot-scorch {
+  0% { transform: translateY(0) rotateZ(0); filter: none; opacity: 1; }
+  20% { transform: translateY(0) rotateZ(-2deg); border-color: var(--danger-bright); }
+  40% { transform: translateY(0) rotateZ(2deg); }
+  60% { transform: translateY(0) rotateZ(-1deg); }
+  100% { transform: translateY(0) rotateZ(0); filter: grayscale(0.85) brightness(0.5); opacity: 0.4; box-shadow: none; }
+}
+
+/* 봉인된 카드 (모든 오답 소진 후 등장) */
+.tarot-sealed {
+  animation: none;
+  opacity: 0.5;
+  filter: grayscale(0.6) brightness(0.65);
+  cursor: not-allowed;
+  border-style: dashed;
+}
+
+.tarot-sealed .tarot-text {
+  font-style: italic;
+  opacity: 0.85;
+}
+
+.tarot-sealed:hover {
+  transform: none;
+  box-shadow: 0 0 18px rgba(154,20,20,0.18);
+  border-color: var(--border-faint);
+}
+
+.tarot-sealed.awake {
+  opacity: 1;
+  filter: none;
+  cursor: pointer;
+  border-style: solid;
+  border-color: var(--gold-bright);
+  animation: tarot-sealed-awaken 1.6s ease-in-out infinite;
+}
+
+.tarot-sealed.awake .tarot-text {
+  font-style: normal;
+}
+
+.tarot-sealed.awake:hover,
+.tarot-sealed.awake:focus-visible {
+  transform: translateY(-6px) rotateZ(-1deg);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.4), 0 0 30px rgba(212,175,105,0.45);
+}
+
+@keyframes tarot-sealed-awaken {
+  0%, 100% { box-shadow: 0 0 20px rgba(212,175,105,0.3); }
+  50% { box-shadow: 0 0 38px rgba(212,175,105,0.55); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tarot-card, .tarot-sealed.awake { animation: none !important; }
 }
 
 .choice-feedback {
@@ -555,6 +716,7 @@ button.btn-danger {
   font-size: 13px;
   color: var(--ink-dim);
   margin-top: 4px;
+  text-align: center;
 }
 
 /* 실패 페이지 (7p) */

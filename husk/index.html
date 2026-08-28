@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>만두의 여름 휴가 5</title>
+<link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body>
+  <main class="stage">
+    <span class="chapter-tag">CHAPTER 5</span>
+    <p class="story">희미한 음악이 들려온다. 앞에서 받은 힌트와 함께 들리는 음악 소리를 따라가보자.</p>
+
+
+    <form class="answer-form" id="quiz2-form">
+      <div class="coord-row">
+        <div class="coord-group">
+          <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" class="coord-input" id="quiz2-x1" autocomplete="off" />
+          <span class="coord-dot">.</span>
+          <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="coord-input" id="quiz2-x2" autocomplete="off" />
+        </div>
+        <div class="coord-group">
+          <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" class="coord-input" id="quiz2-y1" autocomplete="off" />
+          <span class="coord-dot">.</span>
+          <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="coord-input" id="quiz2-y2" autocomplete="off" />
+        </div>
+        <button type="submit">입력</button>
+      </div>
+      <div class="error-msg" id="quiz2-error"></div>
+    </form>
+  </main>
+
+  <p class="brand-footer">만두의 여름 휴가 · 모그리 따끈따끈 <<만두>></p>
+
+  <script>
+    (function () {
+      const form = document.getElementById("quiz2-form");
+      const errorEl = document.getElementById("quiz2-error");
+      const fields = ["quiz2-x1", "quiz2-x2", "quiz2-y1", "quiz2-y2"].map((id) => document.getElementById(id));
+      const answer = ["8", "3", "31", "2"];
+      const nextUrl = "../whisper/";
+      const failUrl = "../fail/";
+
+      fields.forEach((el, i) => {
+        el.addEventListener("input", () => {
+          el.value = el.value.replace(/[^0-9]/g, "");
+          if (el.value.length >= el.maxLength && i < fields.length - 1) {
+            fields[i + 1].focus();
+          }
+        });
+        el.addEventListener("keydown", (e) => {
+          if (e.key === "Backspace" && el.value.length === 0 && i > 0) {
+            fields[i - 1].focus();
+          }
+        });
+      });
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const values = fields.map((el) => el.value.trim());
+
+        if (values.some((v) => v.length === 0)) {
+          showError("네 칸을 모두 입력해 주세요.");
+          return;
+        }
+
+        const correct = values.every((v, i) => v === answer[i]);
+
+        if (correct) {
+          form.querySelector("button[type=submit]").disabled = true;
+          errorEl.textContent = "";
+          errorEl.classList.remove("show");
+          setTimeout(() => {
+            window.location.href = nextUrl;
+          }, 350);
+        } else {
+          setTimeout(() => {
+            window.location.href = failUrl;
+          }, 300);
+          showError("정답이 아닙니다... 기록을 확인하는 중.");
+        }
+      });
+
+      function showError(msg) {
+        errorEl.textContent = msg;
+        errorEl.classList.remove("show");
+        void errorEl.offsetWidth;
+        errorEl.classList.add("show");
+      }
+    })();
+  </script>
+  <!-- FFXIV OST The RakTika Greatwood Theme #2 ( A Hopeless Race ) -->
+  <audio id="bgm" src="../assets/sound/bgm5.mp3" loop preload="auto"></audio>
+
+  <button id="bgm-toggle" aria-label="배경음악 켜기/끄기" title="배경음악 켜기/끄기"
+    style="position:fixed; right:16px; bottom:16px; z-index:999; width:44px; height:44px;
+          border-radius:50%; border:none; background:rgba(20,20,30,0.75); color:#fff;
+          font-size:20px; line-height:44px; text-align:center; cursor:pointer; padding:0;">🔈</button>
+
+  <script>
+  (function () {
+    var audio = document.getElementById('bgm');
+    var btn = document.getElementById('bgm-toggle');
+    var userPaused = false;
+
+    audio.volume = 0.02; // 볼륨 50% (0.0 ~ 1.0 사이로 조절 가능)
+
+    // 아이콘은 "내가 껐다/켰다" 여부가 아니라 실제 audio 상태를 그대로 따라가게 함
+    audio.addEventListener('play',  function () { btn.textContent = '🔈'; });
+    audio.addEventListener('pause', function () { btn.textContent = '🔇'; });
+
+    // 파일을 못 찾거나 재생 자체가 실패하면 콘솔에 원인을 남기고 버튼에 표시
+    audio.addEventListener('error', function () {
+      var code = audio.error ? audio.error.code : '?';
+      console.error('[BGM] 로드/재생 실패 (code ' + code + '). src="' + audio.currentSrc + '" 경로와 파일이 실제로 있는지 확인하세요.');
+      btn.textContent = '⚠️';
+      btn.title = 'BGM 파일을 재생할 수 없습니다 (콘솔 확인)';
+    });
+
+    function armResumeOnInteraction() {
+      var resume = function () {
+        if (!userPaused) {
+          audio.play().catch(function (err) { console.error('[BGM] play() 실패:', err); });
+        }
+        window.removeEventListener('pointerdown', resume);
+        window.removeEventListener('keydown', resume);
+      };
+      window.addEventListener('pointerdown', resume, { once: true });
+      window.addEventListener('keydown', resume, { once: true });
+    }
+
+    function tryPlay() {
+      var p = audio.play();
+      if (p && typeof p.catch === 'function') {
+        p.catch(function (err) {
+          // 자동재생이 막힌 경우(NotAllowedError): 첫 사용자 입력 시 재생
+          console.warn('[BGM] 자동재생이 막혔습니다. 화면을 한 번 클릭/터치하면 재생됩니다.', err);
+          armResumeOnInteraction();
+        });
+      }
+    }
+
+    btn.addEventListener('click', function () {
+      if (audio.paused) {
+        userPaused = false;
+        audio.play().catch(function (err) { console.error('[BGM] play() 실패:', err); });
+      } else {
+        userPaused = true;
+        audio.pause();
+      }
+    });
+
+    tryPlay();
+  })();
+  </script>
+</body>
+</html>

@@ -26,24 +26,24 @@
     </div>
 
     <div class="npc-reveal" id="npc-reveal">
-      <p class="story" style="text-align:center; margin-bottom:6px;">안개가 걷히자, 로브를 쓴 인물의 형상이 또렷해진다.</p>
+      <p class="story" style="text-align:center;">안개가 걷히자, 로브를 쓴 인물의 형상이 또렷해진다. <br/> 이 사람도 폐가에 갇혔던 피해자인 듯 하다.</p>
       <div class="npc-figure" id="npc-figure" title="말을 건다">🕯️</div>
-      <p class="dim" style="font-size:13px;">그에게 다가가 귓속말로 특정 키워드를 보내자, 잠시 눈빛이 돌아오며 힌트를 중얼거린다.</p>
+      <p class="dim" style="font-size:13px;">그의 관심을 끌 방법이 있을까?</p>
     </div>
 
     <div id="answer-section" style="display:none;">
-      <p class="story">
+      <!-- <p class="story">
         <strong>(※ 실제 게임 내에서 진행자가 보내는 귓속말/암호를 받아 아래에 입력하세요)</strong><br>
-        다음 페이지에 접속하자, 갇힌 영혼들이 모여있는 진짜 장소를 가리키는 암호가 나타난다.
-      </p>
+        갇힌 영혼들이 모여있는 진짜 장소를 가리키는 암호가 나타난다.
+      </p> -->
 
-      <div class="note-card">
+      <!-- <div class="note-card">
         <span class="speaker">퀴즈 4</span> 영혼이 갇힌 곳
         <span class="msg-time">목적지: 라케티카 대삼림 - 사튀아 습지 (깨진 보물알)</span>
-      </div>
+      </div> -->
 
       <form class="answer-form" id="quiz4-form">
-        <label for="quiz4-input">귓속말로 전달받은 암호를 입력하세요</label>
+        <label for="quiz4-input">전달받은 암호를 입력하세요</label>
         <div class="answer-row">
           <input type="text" id="quiz4-input" placeholder="정답을 입력하세요" autocomplete="off" />
           <button type="submit">전송</button>
@@ -51,10 +51,10 @@
         <div class="error-msg" id="quiz4-error"></div>
       </form>
 
-      <div class="hint-box">
+      <!-- <div class="hint-box">
         <b>진행자 안내</b><br>
         현재 예시 정답은 <b>귓속말답장</b> 입니다. 실제 진행 시 인게임에서 참가자에게 귓속말로 전달할 암호로 바꿔서 사용하세요.
-      </div>
+      </div> -->
     </div>
   </main>
 
@@ -154,7 +154,8 @@
       [tiles[idx], tiles[emptyIdx]] = [tiles[emptyIdx], tiles[idx]];
       render();
 
-      if (isSolved(tiles)) {
+      if (true) {
+      // if (isSolved(tiles)) {
         solved = true;
         statusEl.textContent = "안개가 걷히고 있다...";
         setTimeout(() => {
@@ -179,8 +180,8 @@
       formId: "quiz4-form",
       inputId: "quiz4-input",
       errorId: "quiz4-error",
-      answers: ["whisper"],
-      nextUrl: "../whisper/",
+      answers: ["The Husk"],
+      nextUrl: "../husk/",
       failUrl: "../fail/"
     });
   </script>
