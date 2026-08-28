@@ -10,7 +10,18 @@
 }
 .glitch-char {
   display: inline-block;
-  animation: glitch-flicker 30s infinite steps(1, end);
+  animation: glitch-flicker 20s infinite steps(1, end);
+}
+@keyframes candleFlicker {
+  0%, 100% { opacity: 1; }
+  45% { opacity: 0.85; }
+  50% { opacity: 0.95; }
+  72% { opacity: 0.8; }
+  78% { opacity: 1; }
+}
+@keyframes gearTurn {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 </style>
 <meta charset="UTF-8" />
@@ -21,101 +32,110 @@
 <body>
   <main class="stage">
     <span class="chapter-tag">CHAPTER 1</span>
-      <div class="art-slot" style="min-height:0; aspect-ratio: 1000 / 1577; max-width: 600px; margin-left:auto; margin-right:auto;">
-      <div style="width:100%; height:100%; position:relative; overflow:hidden; container-type: inline-size;">
-        <div style="width:100cqw; position:relative; overflow:hidden; background:linear-gradient(180deg, #0b1220 0%, #131b30 30%, #1a2440 55%, #12182a 100%); font-family: 'Noto Sans KR', sans-serif; color:#e9ecf5; padding-bottom:25cqw;">
+      <div class="art-slot" style="min-height:0; max-width: 600px; margin-left:auto; margin-right:auto;">
+      <div style="width:100%; position:relative; overflow:hidden; container-type: inline-size;">
+        <div style="width:100cqw; position:relative; overflow:hidden; background:linear-gradient(180deg, #1b0d09 0%, #2a130d 30%, #170a08 60%, #0a0504 100%); font-family:'Nanum Myeongjo','Gowun Batang', serif; color:#e8dcdc; padding-bottom:10.7037cqw; box-shadow: inset 0 0 0 max(1px,0.2778cqw) rgba(201,161,92,0.32), inset 0 0 0 max(1px,0.6481cqw) rgba(0,0,0,0.4);">
 
-          <!-- moon glow -->
-          <div style="position:absolute; top:-8.3333cqw; right:-5.5556cqw; width:38.8889cqw; height:38.8889cqw; border-radius:50%; background:radial-gradient(circle at 40% 40%, rgba(255,244,214,0.35), rgba(255,244,214,0) 65%); filter:blur(0.1852cqw);"></div>
+          <!-- aged paper texture -->
+          <div style="position:absolute; inset:0; z-index:1; pointer-events:none; opacity:0.5; background-image:repeating-linear-gradient(115deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 3px), repeating-linear-gradient(25deg, rgba(0,0,0,0.035) 0px, rgba(0,0,0,0.035) 1px, transparent 1px, transparent 4px);"></div>
 
-          <!-- fog bands -->
+          <!-- vignette -->
+          <div style="position:absolute; inset:0; z-index:1; pointer-events:none; background:radial-gradient(ellipse at 50% 42%, rgba(0,0,0,0) 42%, rgba(0,0,0,0.62) 100%);"></div>
+
+          <!-- corner rivets -->
+          <div style="position:absolute; top:1.4815cqw; left:1.4815cqw; width:1.6667cqw; height:1.6667cqw; border-radius:50%; background:radial-gradient(circle at 35% 30%, #d8b578, #6b4a22 75%); box-shadow:0 0.1852cqw 0.3704cqw rgba(0,0,0,0.6); z-index:2;"></div>
+          <div style="position:absolute; top:1.4815cqw; right:1.4815cqw; width:1.6667cqw; height:1.6667cqw; border-radius:50%; background:radial-gradient(circle at 35% 30%, #d8b578, #6b4a22 75%); box-shadow:0 0.1852cqw 0.3704cqw rgba(0,0,0,0.6); z-index:2;"></div>
+          <div style="position:absolute; bottom:1.4815cqw; left:1.4815cqw; width:1.6667cqw; height:1.6667cqw; border-radius:50%; background:radial-gradient(circle at 35% 30%, #d8b578, #6b4a22 75%); box-shadow:0 0.1852cqw 0.3704cqw rgba(0,0,0,0.6); z-index:2;"></div>
+          <div style="position:absolute; bottom:1.4815cqw; right:1.4815cqw; width:1.6667cqw; height:1.6667cqw; border-radius:50%; background:radial-gradient(circle at 35% 30%, #d8b578, #6b4a22 75%); box-shadow:0 0.1852cqw 0.3704cqw rgba(0,0,0,0.6); z-index:2;"></div>
+
+          <!-- candlelight glow -->
+          <div style="position:absolute; top:-8.3333cqw; right:-5.5556cqw; width:38.8889cqw; height:38.8889cqw; border-radius:50%; background:radial-gradient(circle at 40% 40%, rgba(255,196,120,0.32), rgba(255,196,120,0) 65%); filter:blur(0.1852cqw); animation:candleFlicker 6.5s ease-in-out infinite;"></div>
+
+          <!-- large mechanism gear watermark -->
+          <svg viewBox="0 0 24 24" style="position:absolute; top:8cqw; left:20cqw; width:60cqw; height:60cqw; opacity:0.045; animation:gearTurn 120s linear infinite; transform-origin:50% 50%;">
+            <path fill="#c9a15c" d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
+          </svg>
+
+          <!-- dust / smoke bands -->
           <svg width="1080" height="180" viewBox="0 0 1080 180" style="position:absolute; top:19.4444cqw; left:0; width:100cqw; height:16.6667cqw;">
-            <ellipse cx="180" cy="90" rx="260" ry="40" fill="#3a4568" opacity="0.35"/>
-            <ellipse cx="620" cy="60" rx="320" ry="36" fill="#3a4568" opacity="0.3"/>
-            <ellipse cx="950" cy="110" rx="220" ry="34" fill="#3a4568" opacity="0.3"/>
+            <ellipse cx="180" cy="90" rx="260" ry="40" fill="#4a3226" opacity="0.32"/>
+            <ellipse cx="620" cy="60" rx="320" ry="36" fill="#4a3226" opacity="0.28"/>
+            <ellipse cx="950" cy="110" rx="220" ry="34" fill="#4a3226" opacity="0.28"/>
           </svg>
 
           <!-- corner ribbon: 무료 초대권 -->
-          <div style="position:absolute; top:3.3333cqw; left:-5.9259cqw; width:25.9259cqw; transform:rotate(-40deg); background:#b3222a; text-align:center; padding:0.7407cqw 0; box-shadow:0 0.3704cqw 0.9259cqw rgba(0,0,0,0.4); z-index:5;">
+          <div style="position:absolute; top:3.3333cqw; left:-5.9259cqw; width:25.9259cqw; transform:rotate(-40deg); background:linear-gradient(180deg, #7a1015 0%, #3d0708 100%); text-align:center; padding:0.7407cqw 0; box-shadow:inset 0 0.1389cqw 0 rgba(201,161,92,0.5), inset 0 -0.1389cqw 0 rgba(201,161,92,0.5), 0 0.3704cqw 0.9259cqw rgba(0,0,0,0.5); z-index:5;">
             <div style="font-family:'Black Han Sans', sans-serif; font-size:2.037cqw; color:#fff4d6; letter-spacing:0.1852cqw;">무료 초대권</div>
           </div>
 
-          <!-- bats -->
-          <svg width="90" height="40" viewBox="0 0 90 40" style="position:absolute; top:11.1111cqw; left:11.1111cqw; opacity:0.8; width:8.3333cqw; height:3.7037cqw;">
-            <path d="M45 20 C40 5 20 5 5 18 C18 14 28 20 30 24 C22 22 12 26 8 34 C22 30 34 26 45 30 C56 26 68 30 82 34 C78 26 68 22 60 24 C62 20 72 14 85 18 C70 5 50 5 45 20 Z" fill="#0d1425"/>
+          <!-- tarnished gears (music box mechanism) -->
+          <svg viewBox="0 0 24 24" style="position:absolute; top:11.1111cqw; left:11.1111cqw; opacity:0.6; width:6.4815cqw; height:6.4815cqw; animation:gearTurn 45s linear infinite;">
+            <path fill="#8a6a3a" d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
           </svg>
-          <svg width="60" height="26" viewBox="0 0 90 40" style="position:absolute; top:15.7407cqw; left:79.6296cqw; opacity:0.7; width:5.5556cqw; height:2.4074cqw;">
-            <path d="M45 20 C40 5 20 5 5 18 C18 14 28 20 30 24 C22 22 12 26 8 34 C22 30 34 26 45 30 C56 26 68 30 82 34 C78 26 68 22 60 24 C62 20 72 14 85 18 C70 5 50 5 45 20 Z" fill="#0d1425"/>
+          <svg viewBox="0 0 24 24" style="position:absolute; top:15.7407cqw; left:80.5cqw; opacity:0.5; width:4.4444cqw; height:4.4444cqw; animation:gearTurn 55s linear infinite reverse;">
+            <path fill="#8a6a3a" d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
           </svg>
 
           <!-- header -->
           <div style="position:relative; z-index:4; text-align:center; padding-top:13.8889cqw;">
-            <div style="font-size:2.4074cqw; letter-spacing:0.0926cqw; color:#c9d0e8; font-weight:500;">오늘 단 하루, 당신의 담력을 시험하세요~!</div>
-            <div style="font-family:'Black Han Sans', sans-serif; font-size:9.6296cqw; line-height:1.05; color:#fff4d6; margin-top:1.6667cqw; text-shadow:0 0 2.2222cqw rgba(255,244,214,0.35), 0 0.3704cqw 0 #7a1015;">폐가 탈출 체험</div>
-            <div style="font-family:'Black Han Sans', sans-serif; font-size:5cqw; color:#8fe3b0; margin-top:0.7407cqw; letter-spacing:0.1852cqw;">1일 무료 초대권</div>
+            <div style="font-size:2.4074cqw; letter-spacing:0.0926cqw; color:#cbb89a; font-weight:500;">당신의 담력을 시험하세요</div>
+            <div style="font-family:'Black Han Sans', sans-serif; font-size:9.6296cqw; line-height:1.05; color:#fff4d6; margin-top:1.6667cqw; text-shadow:0 0 2.4cqw rgba(255,205,140,0.4), 0 0.3704cqw 0 #5a0d0d;">폐가 탈출 체험</div>
+            <div style="font-family:'Black Han Sans', sans-serif; font-size:5cqw; color:#c9a15c; margin-top:0.7407cqw; letter-spacing:0.1852cqw;">1일 무료 초대권</div>
           </div>
 
           <!-- divider -->
-          <div style="position:relative; z-index:4; margin:3.1481cqw 8.3333cqw 0; height:0.1852cqw; background:linear-gradient(90deg, transparent, #55618c, transparent);"></div>
+          <div style="position:relative; z-index:4; margin:3.1481cqw 8.3333cqw 0; height:0.1852cqw; background:linear-gradient(90deg, transparent, rgba(201,161,92,0.55), transparent);"></div>
 
           <!-- content row -->
           <div style="position:relative; z-index:4; display:flex; gap:2.5926cqw; margin:3.1481cqw 6.4815cqw 0; align-items:stretch;">
 
           <!-- bullet card -->
-          <div style="flex:1.35; background:rgba(15,21,40,0.72); border:max(1px, 0.0926cqw) solid #3a4568; border-radius:0.9259cqw; padding:2.7778cqw 2.963cqw; display:flex; flex-direction:column; gap:1.4815cqw;">
-            <div style="font-size:2cqw; line-height:1.55; color:#e9ecf5; text-align:left;">※ 본 초대권 소지하신 분은 차량 탑승시만 (무료)</div>
-            <div style="font-size:2cqw; line-height:1.55; color:#e9ecf5; text-align:left;">※ 본 초대권 소지하신 분에게 <span class="glitch-char" style="animation-delay:7.1s;">안</span>전을 보장하는 당일 탈출 체험 이용료 (무료)</div>
-            <div style="font-size:2cqw; line-height:1.55; color:#e9ecf5; text-align:left;">※ 단, 차량번호가 13<span class="glitch-char" style="animation-delay:2.1s;">라</span> 4444인 경우 절대 탑승하지 마십시오</div>
-            <div style="font-size:2cqw; line-height:1.55; color:#e9ecf5; text-align:left;">※ 12인승 <span class="glitch-char" style="animation-delay:5s;">벤</span>으로 이동 (선착순 배차), <span class="glitch-char" style="animation-delay:0s;">식</span>사 제공 없음, 단체 신청은 별도 문의</div>
-            <div style="font-size:2cqw; line-height:1.55; color:#e9ecf5; text-align:left;">※ <span class="glitch-char" style="animation-delay:6.1s;">이</span> 초대권은 1매에 3인까지 가능</div>
-            <div style="font-size:2cqw; line-height:1.55; color:#e9ecf5; text-align:left;">※ 신청 인원 <span class="glitch-char" style="animation-delay:3.1s;">6</span>명 <span class="glitch-char" style="animation-delay:3.6s;">이</span>하일 때는 출발 못함</div>
-            <div style="font-size:2cqw; line-height:1.55; color:#e9ecf5; text-align:left;">※ 심약자, 임산부, 어린<span class="glitch-char" style="animation-delay:2.1s;">이</span> 동반 불가</div>
+          <div style="flex:2.35; background:rgba(19,8,8,0.75); border:max(1px, 0.0926cqw) solid rgba(158,34,34,0.35); border-radius:0.9259cqw; padding:2.7778cqw 2.963cqw; display:flex; flex-direction:column; gap:1.4815cqw;">
+            <div style="font-size:2cqw; line-height:1.55; color:#e8dcdc; text-align:left;">※ 본 초대권 소지하신 분은 차량 탑승시만 (무료)</div>
+            <div style="font-size:2cqw; line-height:1.55; color:#e8dcdc; text-align:left;">※ 단, 버스가 도착한다거나 도착한 차량번호가 13<span class="glitch-char" style="animation-delay:2.1s;">라</span> 4444인 경우 절대 탑승하지 마십시오. 12인승 <span class="glitch-char" style="animation-delay:5s;">벤</span>으로 이동합니다</div>
+            <div style="font-size:2cqw; line-height:1.55; color:#e8dcdc; text-align:left;">※ <span class="glitch-char" style="animation-delay:7.1s;">안</span>전은 보장하지만 <span class="glitch-char" style="animation-delay:0s;">식</span>사 제공은 없습니다</div>
+            <div style="font-size:2cqw; line-height:1.55; color:#e8dcdc; text-align:left;">※ 문의<span class="glitch-char" style="animation-delay:1.4s;">처</span>에서 참가자에게 개인적으로 연락을 한 경우 절대 답변하지 마십시오</div>
+            <div style="font-size:2cqw; line-height:1.55; color:#e8dcdc; text-align:left;">※ <span class="glitch-char" style="animation-delay:6.1s;">이</span> 초대권은 1매에 3인까지 가능합니다</div>
+            <div style="font-size:2cqw; line-height:1.55; color:#e8dcdc; text-align:left;">※ 신청 인원이 <span class="glitch-char" style="animation-delay:3.1s;">6</span>명 이하일 때는 출발 할 수 없습니다</div>
+            <div style="font-size:2cqw; line-height:1.55; color:#e8dcdc; text-align:left;">※ 일생에 단 한 <span class="glitch-char" style="animation-delay:2.8s;">번</span>만 신청 가능하며 어린<span class="glitch-char" style="animation-delay:6.6s;">이</span> 동반 불가입니다</div>
+            <div style="font-size:2cqw; line-height:1.55; color:#e8dcdc; text-align:left;">※ <span class="glitch-char" style="animation-delay:4.9s;">이</span> 설명서를 읽지 않아 발생하는 모든 문제에는 절대 책임을 지지 않습니다</div>
           </div>
 
           <!-- illustration card -->
-          <div style="flex:1; min-width:0; overflow:hidden; background:rgba(15,21,40,0.72); border:max(1px, 0.0926cqw) solid #3a4568; border-radius:0.9259cqw; padding:2.037cqw; display:flex; flex-direction:column; align-items:center; gap:1.2963cqw;">
-            <div style="font-family:'Black Han Sans', sans-serif; font-size:2.4074cqw; color:#ffd875;">폐가의 공포 체험</div>
-            <div style="width:30.5556cqw; height:27.7778cqw; max-width:100%; border-radius:0.5cqw; overflow:hidden; position:relative; flex-shrink:0;">
-              <img src="assets/img/flyer_web.jpg" alt="폐가 사진" style="width:100%; height:100%; object-fit:cover; display:block;">
+          <div style="flex:1; min-width:0; overflow:hidden; background:rgba(19,8,8,0.75); border:max(1px, 0.0926cqw) solid rgba(158,34,34,0.35); border-radius:0.9259cqw; padding:2.037cqw; display:flex; flex-direction:column; align-items:center; gap:1.2963cqw;">
+            <div style="font-family:'Black Han Sans', sans-serif; font-size:2.4074cqw; color:#e0b95c;">폐가의 공포 체험</div>
+            <div style="width:30.5556cqw; height:27.7778cqw; max-width:100%; border-radius:0.5cqw; overflow:hidden; position:relative; flex-shrink:0; box-shadow:inset 0 0 0 max(1px,0.1852cqw) rgba(201,161,92,0.3);">
+              <img src="assets/img/flyer_web.jpg" alt="폐가 사진" style="width:100%; height:100%; object-fit:cover; display:block; filter:sepia(0.35) contrast(1.05);">
             </div>
-            <div style="font-size:1.6667cqw; color:#a9b2d0; text-align:center; line-height:1.5;">실제 폐가 탐방 · 담력 테스트<br/>단체 인솔자 동행<br/>문의<span class="glitch-char" style="animation-delay:3.1s;">처</span>: 만두투어</div>
           </div>
         </div>
 
           <!-- reward banner -->
           <div style="position:relative; z-index:4; margin:3.5185cqw 6.4815cqw 0;">
-            <div style="background:linear-gradient(135deg, #17331f 0%, #0f2318 100%); border:max(1px, 0.1852cqw) solid #4fae6d; border-radius:1.2963cqw; padding:3.5185cqw 2.7778cqw 2.7778cqw; text-align:center;">
+            <div style="background:linear-gradient(135deg, #17331f 0%, #0f2318 100%); border:max(1px, 0.1852cqw) solid #4fae6d; border-radius:1.2963cqw; padding:3.5185cqw 2.7778cqw 2.7778cqw; text-align:center; box-shadow:inset 0 0.1389cqw 0 rgba(201,161,92,0.25), 0 0 3cqw rgba(79,174,109,0.2);">
               <div style="font-size:2.5926cqw; color:#c9f0d6; letter-spacing:0.0926cqw;">무사고 탈출 시</div>
               <div style="font-family:'Black Han Sans', sans-serif; font-size:7.037cqw; color:#ffe066; margin-top:0.5556cqw; text-shadow:0 0 1.8519cqw rgba(255,224,102,0.4);">100억 길 증정</div>
             </div>
           </div>
 
           <!-- contact table -->
-          <div style="position:relative; z-index:4; margin:3.1481cqw 6.4815cqw 0 6.4815cqw; display:flex; flex-direction:column; gap:0; border:max(1px, 0.0926cqw) solid #3a4568; border-radius:0.9259cqw; overflow:hidden;">
-            <div style="display:flex; border-bottom:max(1px, 0.0926cqw) solid #3a4568;">
-              <div style="width:20.3704cqw; background:rgba(255,255,255,0.04); padding:1.6667cqw 2.037cqw; font-size:2.2222cqw; color:#a9b2d0;">문의전화</div>
-              <div style="flex:1; padding:1.6667cqw 2.037cqw; font-size:2.2222cqw; color:#e9ecf5;">010-4444-<span style="filter:blur(0.1944cqw); display:inline-block;">▮▮▮▮</span></div>
+          <div style="position:relative; z-index:4; margin:3.1481cqw 6.4815cqw 0 6.4815cqw; display:flex; flex-direction:column; gap:0; border:max(1px, 0.0926cqw) solid rgba(158,34,34,0.35); border-radius:0.9259cqw; overflow:hidden;">
+            <div style="display:flex; border-bottom:max(1px, 0.0926cqw) solid rgba(158,34,34,0.35);">
+              <div style="width:20.3704cqw; background:rgba(255,255,255,0.04); padding:1.6667cqw 2.037cqw; font-size:2.2222cqw; color:#9c8080;">문의전화</div>
+              <div style="flex:1; padding:1.6667cqw 2.037cqw; font-size:2.2222cqw; color:#e8dcdc;">010-4201-<span style="filter:blur(0.1944cqw); display:inline-block;">▮▮▮▮</span></div>
             </div>
-            <div style="display:flex; border-bottom:max(1px, 0.0926cqw) solid #3a4568;">
-              <div style="width:20.3704cqw; background:rgba(255,255,255,0.04); padding:1.6667cqw 2.037cqw; font-size:2.2222cqw; color:#a9b2d0;">출발일시</div>
-              <div style="flex:1; padding:1.6667cqw 2.037cqw; font-size:2.4074cqw; color:#e9ecf5; font-weight:700;">4시 44분</div>
+            <div style="display:flex; border-bottom:max(1px, 0.0926cqw) solid rgba(158,34,34,0.35);">
+              <div style="width:20.3704cqw; background:rgba(255,255,255,0.04); padding:1.6667cqw 2.037cqw; font-size:2.2222cqw; color:#9c8080;">출발일시</div>
+              <div style="flex:1; padding:1.6667cqw 2.037cqw; font-size:2.4074cqw; color:#e8dcdc; font-weight:700;">4시 43분</div>
             </div>
             <div style="display:flex;">
-              <div style="width:20.3704cqw; background:rgba(255,255,255,0.04); padding:1.6667cqw 2.037cqw; font-size:2.2222cqw; color:#a9b2d0;">출발장소</div>
-              <div style="flex:1; padding:1.6667cqw 2.037cqw; font-size:2.2222cqw; color:#e9ecf5;"><span style="filter:blur(0.1944cqw); display:inline-block;">▮▮더▮▮▮▮▮번▮▮▮구 앞</span></div>
+              <div style="width:20.3704cqw; background:rgba(255,255,255,0.04); padding:1.6667cqw 2.037cqw; font-size:2.2222cqw; color:#9c8080;">출발장소</div>
+              <div style="flex:1; padding:1.6667cqw 2.037cqw; font-size:2.2222cqw; color:#e8dcdc;"><span style="filter:blur(0.1944cqw); display:inline-block;">▮▮더▮▮▮▮▮번▮▮▮구 앞</span></div>
             </div>
           </div>
         </div>
         </div>
     </div>
-
-    <form class="answer-form" id="quiz1-form">
-      <!-- <div class="answer-row">
-        <input type="text" id="quiz1-input" inputmode="numeric" maxlength="10" placeholder="정답을 입력하세요" autocomplete="off" />
-        <button type="submit">탈출 시작</button>
-      </div>
-      <div class="error-msg" id="quiz1-error"></div> -->
-    </form>
   </main>
 
   <p class="brand-footer">만두의 여름 휴가 · 모그리 따끈따끈 <<만두>></p>
@@ -131,6 +151,7 @@
       failUrl: "fail/"
     });
   </script>
+  <!-- Old Doll - MC Mablo Dos Paredões  -->
   <audio id="bgm" src="assets/sound/bgm1.mp3" loop preload="auto"></audio>
 
   <button id="bgm-toggle" aria-label="배경음악 켜기/끄기" title="배경음악 켜기/끄기"
