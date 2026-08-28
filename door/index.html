@@ -148,6 +148,8 @@
 
   <p class="brand-footer">만두의 여름 휴가 · 모그리 따끈따끈 <<만두>></p>
 
+  <audio id="typing-sfx" src="../assets/sound/typing.mp3" preload="auto"></audio>
+
   <script>
     // 채팅 메시지 순차 출력 연출
     const messages = [
@@ -162,7 +164,47 @@
     ];
 
     const log = document.getElementById("chat-log");
+    const typingSfx = document.getElementById("typing-sfx");
+    typingSfx.volume = 0.3;
+    let typingSfxTimer = null;
+    let sfxArmed = false;
     let i = 0;
+
+    // 매번 같은 0~2초 구간만 들리면 지루하니, 0~4초 사이 임의 지점부터 재생한다.
+    function seekTypingSfxRandom() {
+      const dur = isFinite(typingSfx.duration) && typingSfx.duration > 0 ? typingSfx.duration : 4;
+      const maxStart = Math.min(4, Math.max(0, dur - 0.3));
+      typingSfx.currentTime = Math.random() * maxStart;
+    }
+
+    // 페이지 로드 직후(첫 메시지)는 브라우저 자동재생 정책 때문에
+    // play()가 막힐 수 있어, 첫 상호작용 시 놓친 타자음을 다시 재생한다.
+    function armSfxUnlock() {
+      if (sfxArmed) return;
+      sfxArmed = true;
+      const unlock = () => {
+        sfxArmed = false;
+        seekTypingSfxRandom();
+        typingSfx.play().catch(() => {});
+        window.removeEventListener("pointerdown", unlock);
+        window.removeEventListener("keydown", unlock);
+      };
+      window.addEventListener("pointerdown", unlock, { once: true });
+      window.addEventListener("keydown", unlock, { once: true });
+    }
+
+    function playTypingSfx() {
+      seekTypingSfxRandom();
+      const playPromise = typingSfx.play();
+      if (playPromise && typeof playPromise.catch === "function") {
+        playPromise.catch((err) => {
+          console.warn("[typing] 자동재생이 막혔습니다. 화면을 클릭/터치하면 재생됩니다.", err);
+          armSfxUnlock();
+        });
+      }
+      clearTimeout(typingSfxTimer);
+      typingSfxTimer = setTimeout(() => typingSfx.pause(), 2000);
+    }
 
     function showNext() {
       if (i >= messages.length) {
@@ -174,6 +216,7 @@
       bubble.className = "chat-bubble " + (m.who === "me" ? "me" : "them");
       bubble.innerHTML = `<span class="chat-name">${m.name}</span>${m.text}`;
       log.appendChild(bubble);
+      playTypingSfx();
       window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
       setTimeout(showNext, 3000);
     }
@@ -184,5 +227,7 @@
       window.location.href = "../puzzle/";
     });
   </script>
+
+  <script src="../assets/timer.js"></script>
 </body>
 </html>

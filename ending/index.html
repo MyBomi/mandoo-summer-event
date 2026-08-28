@@ -8,29 +8,99 @@
 </head>
 <body>
   <main class="stage ending-stage">
-    <div class="ending-glyph">🥟</div>
+    <!-- <div class="ending-glyph">🥟</div> -->
     <span class="chapter-tag">EPILOGUE</span>
     <!-- <h1 class="title">무사히, 모두 함께</h1> -->
 
-    <p class="story" style="text-align:left;">그가 사라지자마자 최만두에게 전화가 걸려온다. 사라졌던 친구들이 방금 폐가에서 갑자기 튀어나왔다고 한다. 며칠을 굶었는지 나오자마자 우물물을 정신없이 길어 마시고 있다는 소식이다.
+    <p class="story" style="text-align:left;">그가 사라지자마자 헤피에게 전화가 걸려온다. 당신의 뒤를 몰래 밟아 폐가 앞을 서성이고 있었는데, 갑자기 비쩍 마른 사람들이 폐가에서 갑자기 튀어나왔다고 한다. 며칠을 굶었는지 나오자마자 우물물을 정신없이 길어 마시고 있다는 소식이다.
 
 사람을 구할 수 있어 다행이라는 생각이 들면서도, 눈앞에서 날아간 100억 길에 아쉬움이 남아 그날 밤 쉽게 잠을 이루지 못했다.
 
-헤피와 새봄에게 연락을 해볼까?</p>
+최만두에게 연락을 해볼까?</p>
 
-    <div class="art-slot" style="min-height:160px;">
+    <button type="button" class="pager" id="pager-btn" aria-label="최만두에게 전화 걸기">
+      <div class="pager-screen">
+        <div class="pager-digits" id="pager-digits">552111152</div>
+      </div>
+      <div class="pager-caption" id="pager-caption">눌러서 발신</div>
+    </button>
+
+    <!-- <div class="art-slot" style="min-height:160px;">
       <span class="slot-label">[ 오리부리 탈것 / 다같이 모인 사진 자리 ]</span>
       <span class="slot-desc">assets/img/ending.jpg 로 교체하세요</span>
-    </div>
-
-    <p class="dim" style="margin-bottom: 26px;">THE END<br>탈출 성공! 김교자와 이딤섬을 무사히 구출했습니다.</p>
+    </div> -->
 
     <!--
       아래 href="../index.html" 부분을 실제로 돌아가야 할 곳으로 바꿔주세요.
       예: 디스코드 채널 링크 "https://discord.com/channels/...." 등
     -->
-    <a class="btn" href="../index.html" id="return-btn">헤피와 새봄에게 돌아가기</a>
+    
+    <div class="end-overlay" id="end-overlay">
+      <div class="end-overlay-inner">
+        <p class="end-overlay-title">THE END</p>
+        <p class="end-overlay-text">탈출 성공!<br>김교자와 이딤섬을 무사히 구출했습니다.</p>
+        <a class="btn" href="https://discord.com/channels/1397020463141490798/1434144449554026607" id="return-btn" style="margin-top: 24px;">만두의 품으로 돌아가기</a>
+      </div>
+    </div>
   </main>
   <p class="brand-footer">만두의 여름 휴가 · 모그리 따끈따끈 <<만두>></p>
+
+  <audio id="bgmend1" src="../assets/sound/bgmend1.mp3" preload="auto"></audio>
+  <audio id="bgmend2" src="../assets/sound/bgmend2.mp3" loop preload="auto"></audio>
+
+  <script>
+    (function () {
+      var btn = document.getElementById('pager-btn');
+      var caption = document.getElementById('pager-caption');
+      var bgm1 = document.getElementById('bgmend1');
+      var bgm2 = document.getElementById('bgmend2');
+      var overlay = document.getElementById('end-overlay');
+      var connected = false;
+      var bgm1Timer = null;
+      var endOverlayTimer = null;
+
+      bgm1.volume = 0.2;
+      bgm2.volume = 0.2;
+
+      btn.addEventListener('click', function () {
+        if (!connected) {
+          connected = true;
+          btn.classList.add('connected');
+          caption.textContent = '연결 중...';
+
+          bgm2.play().catch(function (err) {
+            console.error('[BGM] 재생 실패:', err);
+            caption.textContent = '재생할 수 없습니다 (콘솔 확인)';
+          });
+
+          bgm1Timer = setTimeout(function () {
+            bgm1.play().catch(function (err) {
+              console.error('[BGM] 재생 실패:', err);
+            });
+          }, 10000);
+
+          // setTimeout(function () {
+          //   if (connected) caption.textContent = '통화가 연결되었습니다.';
+          // }, 1200);
+
+          endOverlayTimer = setTimeout(function () {
+            overlay.classList.add('show');
+          }, 30000);
+        } else {
+          connected = false;
+          btn.classList.remove('connected');
+          clearTimeout(bgm1Timer);
+          clearTimeout(endOverlayTimer);
+          bgm1.pause();
+          bgm2.pause();
+          bgm1.currentTime = 0;
+          bgm2.currentTime = 0;
+          caption.textContent = '눌러서 재발신';
+        }
+      });
+    })();
+  </script>
+
+  <script src="../assets/timer.js"></script>
 </body>
 </html>

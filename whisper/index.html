@@ -3,73 +3,198 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>만두의 여름 휴가 5</title>
+<title>만두의 여름 휴가 7</title>
 <link rel="stylesheet" href="../assets/style.css" />
 </head>
 <body>
   <main class="stage">
-    <span class="chapter-tag">CHAPTER 5</span>
+    <span class="chapter-tag">CHAPTER 7</span>
     <!-- <h1 class="title">사튀아 습지, 저주의 목소리</h1> -->
 
     <p class="story">목적지에 도달하자 누군가 음산한 목소리로 저주의 주문을 외우고 있다.
-저주를 멈출 방법을 찾아 여러 선택지를 시도해 보지만... 과연 무엇이 통할까?</p>
+저주를 멈출 방법을 찾아 여러 선택지를 시도해 보지만... 과연 무엇이 통할까?<br><br>신중하게 선택하자.</p>
 
-    <div class="art-slot" style="min-height:160px;">
+    <!-- <div class="art-slot" style="min-height:160px;">
       <span class="slot-label">[ 주술사 / 영혼의 보주 이미지 자리 ]</span>
       <span class="slot-desc">assets/img/curse.jpg 로 교체하세요</span>
-    </div>
+    </div> -->
 
     <div class="tarot-grid" id="tarot-grid">
-      <button class="tarot-card" data-correct="false" style="--n:1">
-        <span class="tarot-corner tl">✦</span>
-        <span class="tarot-numeral">Ⅰ</span>
-        <span class="tarot-text">"저주를 거두어 주십시오, 제발!"</span>
-        <span class="tarot-corner br">✦</span>
-      </button>
-      <button class="tarot-card" data-correct="false" style="--n:2">
-        <span class="tarot-corner tl">✦</span>
-        <span class="tarot-numeral">Ⅱ</span>
-        <span class="tarot-text">보주를 향해 정화 마법을 시전한다</span>
-        <span class="tarot-corner br">✦</span>
-      </button>
-      <button class="tarot-card" data-correct="false" style="--n:3">
-        <span class="tarot-corner tl">✦</span>
-        <span class="tarot-numeral">Ⅲ</span>
-        <span class="tarot-text">"저는 그저 지나가던 나그네입니다..."</span>
-        <span class="tarot-corner br">✦</span>
-      </button>
-      <button class="tarot-card" data-correct="false" style="--n:4">
-        <span class="tarot-corner tl">✦</span>
-        <span class="tarot-numeral">Ⅳ</span>
-        <span class="tarot-text">칼을 뽑아 든다</span>
-        <span class="tarot-corner br">✦</span>
-      </button>
-      <button class="tarot-card" data-correct="false" style="--n:5">
-        <span class="tarot-corner tl">✦</span>
-        <span class="tarot-numeral">Ⅴ</span>
-        <span class="tarot-text">조용히 뒷걸음질 쳐서 도망간다</span>
-        <span class="tarot-corner br">✦</span>
-      </button>
-      <button class="tarot-card tarot-sealed" id="tarot-sealed" data-correct="true" disabled>
-        <span class="tarot-corner tl">✦</span>
-        <span class="tarot-numeral">?</span>
-        <span class="tarot-text" id="tarot-sealed-text">봉인된 카드</span>
-        <span class="tarot-corner br">✦</span>
-      </button>
+      <div class="tarot-card" data-correct="false" role="button" tabindex="0" style="--n:1">
+        <div class="tarot-card-inner">
+          <div class="tarot-face tarot-back">
+            <span class="tarot-numeral">Ⅰ</span>
+          </div>
+          <div class="tarot-face tarot-front">
+            <span class="tarot-text">간절히 빌어본다.<br>"저주를 거두어 주십시오, 제발!"</span>
+            <span class="tarot-confirm-hint">다시 눌러 대답하기</span>
+          </div>
+        </div>
+      </div>
+      <div class="tarot-card" data-correct="false" role="button" tabindex="0" style="--n:2">
+        <div class="tarot-card-inner">
+          <div class="tarot-face tarot-back">
+            <span class="tarot-numeral">Ⅱ</span>
+          </div>
+          <div class="tarot-face tarot-front">
+            <span class="tarot-text">백마도사 소울 크리스탈을 이용하여 보주를 향해 정화 마법을 시전한다.</span>
+            <span class="tarot-confirm-hint">다시 눌러 대답하기</span>
+          </div>
+        </div>
+      </div>
+      <div class="tarot-card" data-correct="false" role="button" tabindex="0" style="--n:3">
+        <div class="tarot-card-inner">
+          <div class="tarot-face tarot-back">
+            <span class="tarot-numeral">Ⅲ</span>
+          </div>
+          <div class="tarot-face tarot-front">
+            <span class="tarot-text">내면에 숨어있던<br>연기력을 활용한다.<br>"저는 모르는 일입니다.<br>그저 지나가던 나그네입니다···."</span>
+            <span class="tarot-confirm-hint">다시 눌러 대답하기</span>
+          </div>
+        </div>
+      </div>
+      <div class="tarot-card" data-correct="false" role="button" tabindex="0" style="--n:4">
+        <div class="tarot-card-inner">
+          <div class="tarot-face tarot-back">
+            <span class="tarot-numeral">Ⅳ</span>
+          </div>
+          <div class="tarot-face tarot-front">
+            <span class="tarot-text">이런 사람이랑은<br>말을 섞을 필요도 없다.<br>주저 없이 칼을 뽑아 든다.</span>
+            <span class="tarot-confirm-hint">다시 눌러 대답하기</span>
+          </div>
+        </div>
+      </div>
+      <div class="tarot-card" data-correct="false" role="button" tabindex="0" style="--n:5">
+        <div class="tarot-card-inner">
+          <div class="tarot-face tarot-back">
+            <span class="tarot-numeral">Ⅴ</span>
+          </div>
+          <div class="tarot-face tarot-front">
+            <span class="tarot-text">이상한 사람이다······.<br>조용히 뒷걸음질 쳐서 도망간다.</span>
+            <span class="tarot-confirm-hint">다시 눌러 대답하기</span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="choice-feedback" id="choice-feedback"></div>
   </main>
 
+  <div class="tarot-spotlight-backdrop" id="tarot-spotlight-backdrop"></div>
+
+  <div class="tarot-card tarot-sealed locked" id="tarot-sealed" data-correct="true" role="button" tabindex="-1" aria-disabled="true" style="--n:6">
+    <div class="tarot-card-inner">
+      <div class="tarot-face tarot-back">
+        <span class="tarot-numeral">?</span>
+      </div>
+      <div class="tarot-face tarot-front">
+        <span class="tarot-text">"100억 길을 드리겠습니다."</span>
+        <span class="tarot-confirm-hint">눌러서 전재산을 내놓기</span>
+      </div>
+    </div>
+  </div>
+
   <p class="brand-footer">만두의 여름 휴가 · 모그리 따끈따끈 <<만두>></p>
 
+  <!-- Attack on London - C.K.Martin -->
+  <audio id="bgm" src="../assets/sound/bgm7.mp3" loop preload="auto"></audio>
+  <audio id="bgm-tarot" src="../assets/sound/bgmtarot.mp3" loop preload="auto"></audio>
+
+  <button id="bgm-toggle" aria-label="배경음악 켜기/끄기" title="배경음악 켜기/끄기"
+    style="position:fixed; right:16px; bottom:16px; z-index:999; width:44px; height:44px;
+          border-radius:50%; border:none; background:rgba(20,20,30,0.75); color:#fff;
+          font-size:20px; line-height:44px; text-align:center; cursor:pointer; padding:0;">🔈</button>
+
+<script>
+(function () {
+  var audio = document.getElementById('bgm');
+  var btn = document.getElementById('bgm-toggle');
+  var userPaused = false;
+
+  audio.volume = 0.07; // 볼륨 50% (0.0 ~ 1.0 사이로 조절 가능)
+
+  // 아이콘은 "내가 껐다/켰다" 여부가 아니라 실제 audio 상태를 그대로 따라가게 함
+  audio.addEventListener('play',  function () { btn.textContent = '🔈'; });
+  audio.addEventListener('pause', function () { btn.textContent = '🔇'; });
+
+  // 파일을 못 찾거나 재생 자체가 실패하면 콘솔에 원인을 남기고 버튼에 표시
+  audio.addEventListener('error', function () {
+    var code = audio.error ? audio.error.code : '?';
+    console.error('[BGM] 로드/재생 실패 (code ' + code + '). src="' + audio.currentSrc + '" 경로와 파일이 실제로 있는지 확인하세요.');
+    btn.textContent = '⚠️';
+    btn.title = 'BGM 파일을 재생할 수 없습니다 (콘솔 확인)';
+  });
+
+  function armResumeOnInteraction() {
+    var resume = function () {
+      if (!userPaused) {
+        audio.play().catch(function (err) { console.error('[BGM] play() 실패:', err); });
+      }
+      window.removeEventListener('pointerdown', resume);
+      window.removeEventListener('keydown', resume);
+    };
+    window.addEventListener('pointerdown', resume, { once: true });
+    window.addEventListener('keydown', resume, { once: true });
+  }
+
+  function tryPlay() {
+    var p = audio.play();
+    if (p && typeof p.catch === 'function') {
+      p.catch(function (err) {
+        // 자동재생이 막힌 경우(NotAllowedError): 첫 사용자 입력 시 재생
+        console.warn('[BGM] 자동재생이 막혔습니다. 화면을 한 번 클릭/터치하면 재생됩니다.', err);
+        armResumeOnInteraction();
+      });
+    }
+  }
+
+  btn.addEventListener('click', function () {
+    if (audio.paused) {
+      userPaused = false;
+      audio.play().catch(function (err) { console.error('[BGM] play() 실패:', err); });
+    } else {
+      userPaused = true;
+      audio.pause();
+    }
+  });
+
+  tryPlay();
+})();
+</script>
   <script>
-    const wrongCards = document.querySelectorAll(".tarot-card:not(.tarot-sealed)");
+    const cards = document.querySelectorAll(".tarot-card");
     const sealed = document.getElementById("tarot-sealed");
-    const sealedText = document.getElementById("tarot-sealed-text");
+    const spotlightBackdrop = document.getElementById("tarot-spotlight-backdrop");
+    const wrongCards = document.querySelectorAll(".tarot-card:not(.tarot-sealed)");
     const feedback = document.getElementById("choice-feedback");
-    let locked = false;
+    const bgmMain = document.getElementById("bgm");
+    const bgmTarot = document.getElementById("bgm-tarot");
+    let gameLocked = false;
     let burnedCount = 0;
+    let feedbackTimer = null;
+
+    function fadeAudio(el, toVolume, duration) {
+      const steps = 12;
+      const stepTime = duration / steps;
+      const startVolume = el.volume;
+      const delta = (toVolume - startVolume) / steps;
+      let i = 0;
+      const timer = setInterval(() => {
+        i++;
+        el.volume = Math.max(0, Math.min(1, startVolume + delta * i));
+        if (i >= steps) {
+          clearInterval(timer);
+          if (toVolume === 0) el.pause();
+        }
+      }, stepTime);
+    }
+
+    function crossfadeToTarotBgm() {
+      bgmTarot.volume = 0;
+      bgmTarot.play().catch((err) => console.error("[BGM] bgmtarot 재생 실패:", err));
+      fadeAudio(bgmTarot, 0.2, 800);
+      fadeAudio(bgmMain, 0, 800);
+    }
 
     const failLines = [
       "주술사가 코웃음을 친다. \"그런 걸로는 어림도 없지.\"",
@@ -78,34 +203,80 @@
       "주술사가 손을 내젓는다. \"부질없는 짓이군.\""
     ];
 
-    wrongCards.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        if (locked || btn.disabled) return;
-        btn.classList.add("wrong");
-        btn.disabled = true;
-        feedback.textContent = failLines[Math.floor(Math.random() * failLines.length)];
+    function showFeedback(text) {
+      feedback.textContent = text;
+      feedback.classList.add("show");
+      clearTimeout(feedbackTimer);
+      feedbackTimer = setTimeout(() => {
+        feedback.classList.remove("show");
+      }, 3000);
+    }
 
-        burnedCount++;
-        if (burnedCount === wrongCards.length) {
-          sealed.disabled = false;
-          sealed.classList.add("awake");
-          sealedText.textContent = "무언가 이곳에서 은은히 떨리고 있다...";
-          feedback.textContent = "모든 말이 재가 되어 흩어지자, 봉인된 카드 한 장이 스스로 떨리기 시작한다.";
+    function handleCardActivate(card) {
+      if (gameLocked) return;
+      if (card.classList.contains("burnt") || card.classList.contains("locked")) return;
+
+      if (!card.classList.contains("revealed")) {
+        card.classList.add("revealed");
+        return;
+      }
+
+      if (card === sealed && !card.classList.contains("confirming")) {
+        card.classList.add("confirming");
+        const hint = card.querySelector(".tarot-confirm-hint");
+        if (hint) hint.textContent = "이 선택은 무를 수 없습니다. 후회하지 마세요.";
+        return;
+      }
+
+      const correct = card.dataset.correct === "true";
+
+      if (correct) {
+        gameLocked = true;
+        window.location.href = "../ending/";
+      } else {
+        card.classList.add("burnt");
+        showFeedback(failLines[Math.floor(Math.random() * failLines.length)]);
+
+        if (card !== sealed) {
+          burnedCount++;
+          if (burnedCount === wrongCards.length) {
+            showFeedback("모든 말이 재가 되어 흩어진다...");
+
+            setTimeout(() => {
+              showFeedback("허공에서 카드 한 장이 날아와 자리를 잡는다.");
+
+              setTimeout(() => {
+                sealed.classList.remove("locked");
+                sealed.classList.add("arriving");
+                sealed.setAttribute("tabindex", "0");
+                sealed.removeAttribute("aria-disabled");
+                spotlightBackdrop.classList.add("show");
+                crossfadeToTarotBgm();
+
+                var settle = function () {
+                  sealed.classList.remove("arriving");
+                  sealed.classList.add("awake");
+                };
+                sealed.addEventListener("animationend", settle, { once: true });
+                setTimeout(settle, 950);
+              }, 1800);
+            }, 1800);
+          }
+        }
+      }
+    }
+
+    cards.forEach((card) => {
+      card.addEventListener("click", () => handleCardActivate(card));
+      card.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          handleCardActivate(card);
         }
       });
     });
-
-    sealed.addEventListener("click", () => {
-      if (locked || sealed.disabled) return;
-      locked = true;
-      sealed.classList.remove("awake");
-      sealed.classList.add("correct");
-      sealedText.textContent = "\"100억 길을 드리겠습니다.\"";
-      feedback.textContent = "주술사가 씨익 웃으며 손을 뻗어 길을 받아 챙긴다. \"이번만은... 특별히 살려주지.\"";
-      setTimeout(() => {
-        window.location.href = "../ending/";
-      }, 1500);
-    });
   </script>
+
+  <script src="../assets/timer.js"></script>
 </body>
 </html>

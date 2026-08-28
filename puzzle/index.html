@@ -60,6 +60,71 @@
 
   <p class="brand-footer">만두의 여름 휴가 · 모그리 따끈따끈 <<만두>></p>
 
+  <!-- Gothic Organ Music - "Moonlit Chambers" -->
+  <audio id="bgm" src="../assets/sound/bgm4.mp3" loop preload="auto"></audio>
+
+  <button id="bgm-toggle" aria-label="배경음악 켜기/끄기" title="배경음악 켜기/끄기"
+    style="position:fixed; right:16px; bottom:16px; z-index:999; width:44px; height:44px;
+          border-radius:50%; border:none; background:rgba(20,20,30,0.75); color:#fff;
+          font-size:20px; line-height:44px; text-align:center; cursor:pointer; padding:0;">🔈</button>
+
+<script>
+(function () {
+  var audio = document.getElementById('bgm');
+  var btn = document.getElementById('bgm-toggle');
+  var userPaused = false;
+
+  audio.volume = 0.20; // 볼륨 50% (0.0 ~ 1.0 사이로 조절 가능)
+
+  // 아이콘은 "내가 껐다/켰다" 여부가 아니라 실제 audio 상태를 그대로 따라가게 함
+  audio.addEventListener('play',  function () { btn.textContent = '🔈'; });
+  audio.addEventListener('pause', function () { btn.textContent = '🔇'; });
+
+  // 파일을 못 찾거나 재생 자체가 실패하면 콘솔에 원인을 남기고 버튼에 표시
+  audio.addEventListener('error', function () {
+    var code = audio.error ? audio.error.code : '?';
+    console.error('[BGM] 로드/재생 실패 (code ' + code + '). src="' + audio.currentSrc + '" 경로와 파일이 실제로 있는지 확인하세요.');
+    btn.textContent = '⚠️';
+    btn.title = 'BGM 파일을 재생할 수 없습니다 (콘솔 확인)';
+  });
+
+  function armResumeOnInteraction() {
+    var resume = function () {
+      if (!userPaused) {
+        audio.play().catch(function (err) { console.error('[BGM] play() 실패:', err); });
+      }
+      window.removeEventListener('pointerdown', resume);
+      window.removeEventListener('keydown', resume);
+    };
+    window.addEventListener('pointerdown', resume, { once: true });
+    window.addEventListener('keydown', resume, { once: true });
+  }
+
+  function tryPlay() {
+    var p = audio.play();
+    if (p && typeof p.catch === 'function') {
+      p.catch(function (err) {
+        // 자동재생이 막힌 경우(NotAllowedError): 첫 사용자 입력 시 재생
+        console.warn('[BGM] 자동재생이 막혔습니다. 화면을 한 번 클릭/터치하면 재생됩니다.', err);
+        armResumeOnInteraction();
+      });
+    }
+  }
+
+  btn.addEventListener('click', function () {
+    if (audio.paused) {
+      userPaused = false;
+      audio.play().catch(function (err) { console.error('[BGM] play() 실패:', err); });
+    } else {
+      userPaused = true;
+      audio.pause();
+    }
+  });
+
+  tryPlay();
+})();
+</script>
+
   <script src="../assets/answer.js"></script>
   <script>
     /* ===== 4x4 슬라이드 퍼즐 (숫자 타일 버전, 이미지 있으면 CSS로 교체 가능) ===== */
@@ -154,8 +219,8 @@
       [tiles[idx], tiles[emptyIdx]] = [tiles[emptyIdx], tiles[idx]];
       render();
 
-      if (true) {
-      // if (isSolved(tiles)) {
+      //if (true) {
+      if (isSolved(tiles)) {
         solved = true;
         statusEl.textContent = "안개가 걷히고 있다...";
         setTimeout(() => {
@@ -180,10 +245,12 @@
       formId: "quiz4-form",
       inputId: "quiz4-input",
       errorId: "quiz4-error",
-      answers: ["The Husk"],
-      nextUrl: "../husk/",
+      answers: ["구해줘"],
+      nextUrl: "../help/",
       failUrl: "../fail/"
     });
   </script>
+
+  <script src="../assets/timer.js"></script>
 </body>
 </html>

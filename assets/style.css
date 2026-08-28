@@ -335,7 +335,7 @@ h1.title {
 }
 
 button, .btn {
-  font-family: var(--font-head);
+  /* font-family: var(--font-head); */
   font-size: 14.5px;
   letter-spacing: 0.03em;
   color: var(--ink);
@@ -561,51 +561,109 @@ button.btn-danger {
   box-shadow: 0 0 40px rgba(225,75,63,0.4);
 }
 
-/* 5p 선택지 퍼즐 — 타로 카드 */
+/* 5p 선택지 퍼즐 — 타로 카드 (뒤집기 2단계: 클릭1=뒤집기, 클릭2=응답) */
 .tarot-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 12px;
   margin: 24px 0;
 }
 
+.tarot-card {
+  position: relative;
+  min-width: 0;
+  flex: 0 0 calc((100% - 12px) / 2);
+  aspect-ratio: 457 / 800;
+  perspective: 1000px;
+  cursor: pointer;
+  border-radius: 14px;
+  transition: transform 0.25s ease;
+  animation: tarot-flicker 4.4s ease-in-out infinite;
+  animation-delay: calc(var(--n) * -0.7s);
+}
+
 @media (min-width: 640px) {
-  .tarot-grid { grid-template-columns: repeat(3, 1fr); }
+  .tarot-card { flex-basis: calc((100% - 24px) / 3); }
 }
 
 @media (max-width: 420px) {
-  .tarot-grid { grid-template-columns: 1fr; }
+  .tarot-card { flex-basis: 100%; }
 }
 
-.tarot-card {
+.tarot-card:hover,
+.tarot-card:focus-visible {
+  transform: translateY(-6px) rotateZ(-1deg);
+}
+
+.tarot-card-inner {
   position: relative;
-  background: radial-gradient(circle at 50% 0%, rgba(225,75,63,0.12), transparent 62%), var(--bg-panel-2);
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+.tarot-card.revealed .tarot-card-inner {
+  transform: rotateY(180deg);
+}
+
+.tarot-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 14px;
   border: 1px solid var(--border-faint);
   outline: 1px solid rgba(225,75,63,0.18);
   outline-offset: -5px;
-  border-radius: 14px;
-  min-height: 128px;
-  padding: 24px 14px 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  padding: 16px 12px;
+  box-shadow: 0 0 18px rgba(154,20,20,0.18);
+}
+
+.tarot-back {
+  background-image: url(../assets/img/tarot.jpg);
+  background-size: cover;
+  background-position: center;
+  padding: 0;
+  border: none;
+  outline: none;
+}
+
+.tarot-back .tarot-numeral {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(10,4,4,0.72);
+  border: 1px solid rgba(212,175,105,0.4);
+  border-radius: 999px;
+  padding: 2px 12px;
+}
+
+.tarot-front {
+  background: radial-gradient(circle at 50% 0%, rgba(225,75,63,0.12), transparent 62%), var(--bg-panel-2);
+  transform: rotateY(180deg);
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 13.5px;
   line-height: 1.5;
   text-align: center;
-  cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s;
-  box-shadow: 0 0 18px rgba(154,20,20,0.18);
-  animation: tarot-flicker 4.4s ease-in-out infinite;
-  animation-delay: calc(var(--n) * -0.7s);
+}
+
+.tarot-sealed .tarot-front .tarot-text {
+  font-size: 19px;
+  line-height: 1.6;
 }
 
 .tarot-numeral {
   font-family: var(--font-head);
-  font-size: 15px;
+  font-size: 17px;
   color: var(--gold-bright);
   opacity: 0.85;
 }
@@ -619,104 +677,311 @@ button.btn-danger {
 .tarot-corner.tl { top: 8px; left: 10px; }
 .tarot-corner.br { bottom: 8px; right: 10px; }
 
-@keyframes tarot-flicker {
-  0%, 100% { box-shadow: 0 0 18px rgba(154,20,20,0.18); }
-  50% { box-shadow: 0 0 26px rgba(154,20,20,0.32); }
+.tarot-confirm-hint {
+  font-size: 10.5px;
+  color: var(--ink-dim);
+  opacity: 0.85;
+  margin-top: 2px;
 }
 
-.tarot-card:hover,
-.tarot-card:focus-visible {
-  transform: translateY(-6px) rotateZ(-1deg);
-  border-color: var(--gold-bright);
-  box-shadow: 0 12px 24px rgba(0,0,0,0.4), 0 0 24px rgba(225,75,63,0.35);
+.tarot-card.correct .tarot-confirm-hint,
+.tarot-card.burnt .tarot-confirm-hint {
+  display: none;
+}
+
+.tarot-sealed.confirming .tarot-confirm-hint {
+  color: var(--danger-bright);
+  font-weight: bold;
+}
+
+@keyframes tarot-flicker {
+  0%, 100% { filter: drop-shadow(0 0 10px rgba(154,20,20,0.18)); }
+  50% { filter: drop-shadow(0 0 16px rgba(154,20,20,0.32)); }
 }
 
 .tarot-card.correct {
   animation: tarot-ignite 0.9s ease forwards;
-  border-color: var(--success);
 }
 
-.tarot-card.wrong {
+.tarot-card.burnt {
   animation: tarot-scorch 0.5s ease forwards;
   pointer-events: none;
+  cursor: default;
 }
 
 @keyframes tarot-ignite {
   0% { transform: translateY(-6px) scale(1); }
   40% {
     transform: translateY(-14px) scale(1.07) rotateZ(-1.5deg);
-    box-shadow: 0 0 40px rgba(212,175,105,0.55);
-    background: linear-gradient(160deg, rgba(212,175,105,0.28), rgba(111,174,139,0.1));
+    filter: drop-shadow(0 0 30px rgba(212,175,105,0.55));
   }
   100% {
     transform: translateY(-8px) scale(1.03) rotateZ(0deg);
-    box-shadow: 0 0 55px rgba(111,174,139,0.6);
-    background: linear-gradient(160deg, rgba(111,174,139,0.25), rgba(111,174,139,0.08));
+    filter: drop-shadow(0 0 40px rgba(111,174,139,0.6));
   }
 }
 
 @keyframes tarot-scorch {
   0% { transform: translateY(0) rotateZ(0); filter: none; opacity: 1; }
-  20% { transform: translateY(0) rotateZ(-2deg); border-color: var(--danger-bright); }
+  20% { transform: translateY(0) rotateZ(-2deg); }
   40% { transform: translateY(0) rotateZ(2deg); }
   60% { transform: translateY(0) rotateZ(-1deg); }
-  100% { transform: translateY(0) rotateZ(0); filter: grayscale(0.85) brightness(0.5); opacity: 0.4; box-shadow: none; }
+  100% { transform: translateY(0) rotateZ(0); filter: grayscale(0.85) brightness(0.5); opacity: 0.45; }
 }
 
-/* 봉인된 카드 (모든 오답 소진 후 등장) */
+/* 봉인된 카드 (모든 오답 소진 후 화면 정중앙으로 날아와 등장) */
+.tarot-spotlight-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+  background: rgba(2,1,1,0.82);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.tarot-spotlight-backdrop.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .tarot-sealed {
-  animation: none;
-  opacity: 0.5;
-  filter: grayscale(0.6) brightness(0.65);
-  cursor: not-allowed;
-  border-style: dashed;
+  display: none;
 }
 
-.tarot-sealed .tarot-text {
-  font-style: italic;
-  opacity: 0.85;
+.tarot-sealed.arriving,
+.tarot-sealed.awake {
+  display: block;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 999;
+  width: min(60vw, 260px);
 }
 
-.tarot-sealed:hover {
-  transform: none;
-  box-shadow: 0 0 18px rgba(154,20,20,0.18);
-  border-color: var(--border-faint);
+.tarot-sealed.arriving {
+  animation: tarot-fly-in-center 0.9s cubic-bezier(0.22, 0.9, 0.32, 1.15) both;
+}
+
+@keyframes tarot-fly-in-center {
+  0% {
+    opacity: 0;
+    transform: translate(calc(-50% + 260px), calc(-50% - 320px)) rotate(-32deg) scale(0.45);
+  }
+  70% {
+    opacity: 1;
+    transform: translate(calc(-50% - 10px), calc(-50% + 8px)) rotate(5deg) scale(1.06);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
 }
 
 .tarot-sealed.awake {
-  opacity: 1;
-  filter: none;
   cursor: pointer;
-  border-style: solid;
-  border-color: var(--gold-bright);
+  transform: translate(-50%, -50%);
   animation: tarot-sealed-awaken 1.6s ease-in-out infinite;
 }
 
-.tarot-sealed.awake .tarot-text {
-  font-style: normal;
-}
-
-.tarot-sealed.awake:hover,
-.tarot-sealed.awake:focus-visible {
-  transform: translateY(-6px) rotateZ(-1deg);
-  box-shadow: 0 12px 24px rgba(0,0,0,0.4), 0 0 30px rgba(212,175,105,0.45);
+.tarot-sealed.awake .tarot-back {
+  box-shadow: inset 0 0 0 2px var(--gold-bright);
 }
 
 @keyframes tarot-sealed-awaken {
-  0%, 100% { box-shadow: 0 0 20px rgba(212,175,105,0.3); }
-  50% { box-shadow: 0 0 38px rgba(212,175,105,0.55); }
+  0%, 100% { filter: drop-shadow(0 0 14px rgba(212,175,105,0.3)); }
+  50% { filter: drop-shadow(0 0 24px rgba(212,175,105,0.55)); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .tarot-card, .tarot-sealed.awake { animation: none !important; }
+  .tarot-card-inner { transition: none !important; }
+  .tarot-sealed.arriving {
+    animation: none !important;
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  .tarot-spotlight-backdrop { transition: none !important; }
+}
+
+/* 삐삐(페이저) 발신 위젯 */
+.pager {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 220px;
+  margin: 4px auto 24px;
+  padding: 14px;
+  background: linear-gradient(160deg, #2a1414, #150808);
+  border: 1.5px solid var(--border-faint);
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.5);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.pager:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.55), 0 0 18px rgba(225,75,63,0.25);
+}
+
+.pager-screen {
+  width: 100%;
+  background: #0b1c10;
+  border: 1px solid rgba(120,200,140,0.35);
+  border-radius: 6px;
+  padding: 10px 8px;
+  text-align: center;
+}
+
+.pager-digits {
+  font-family: 'Courier New', monospace;
+  font-size: 20px;
+  letter-spacing: 0.12em;
+  color: #6fe08a;
+  text-shadow: 0 0 8px rgba(111,224,138,0.6);
+}
+
+.pager-caption {
+  margin-top: 6px;
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  color: rgba(111,224,138,0.75);
+  letter-spacing: 0.03em;
+}
+
+.pager.connected .pager-screen {
+  border-color: rgba(225,75,63,0.5);
+}
+
+.pager.connected .pager-digits {
+  animation: pager-blink 1s steps(2, start) infinite;
+}
+
+@keyframes pager-blink {
+  50% { opacity: 0.35; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pager.connected .pager-digits { animation: none !important; }
+}
+
+/* 엔딩 - 전체화면 음침한 페이드인 */
+.end-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: radial-gradient(ellipse at center, rgba(20,4,4,0.94) 0%, rgba(2,1,1,0.98) 75%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 2.4s ease;
+}
+
+.end-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.end-overlay-inner {
+  text-align: center;
+  animation: end-overlay-flicker 3.6s ease-in-out infinite;
+}
+
+.end-overlay-title {
+  font-family: var(--font-head);
+  font-size: 40px;
+  letter-spacing: 0.14em;
+  color: var(--danger-bright);
+  text-shadow: 0 0 24px rgba(224,90,80,0.55), 0 0 60px rgba(122,16,16,0.5);
+  margin: 0 0 18px;
+}
+
+.end-overlay-text {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--ink-dim);
+  margin: 0;
+}
+
+@keyframes end-overlay-flicker {
+  0%, 96%, 100% { opacity: 1; }
+  97% { opacity: 0.55; }
+  98% { opacity: 0.9; }
+  99% { opacity: 0.4; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .end-overlay { transition: none; }
+  .end-overlay-inner { animation: none !important; }
+}
+
+/* 전체 페이지 공용 카운트다운 타이머 (좌측 상단 고정) */
+.game-timer {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 1000;
+  font-family: 'Courier New', monospace;
+  font-size: 26px;
+  font-weight: bold;
+  letter-spacing: 0.06em;
+  color: var(--gold-bright);
+  background: rgba(10,4,4,0.75);
+  border: 1.5px solid var(--border-faint);
+  border-radius: 999px;
+  padding: 10px 22px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+  pointer-events: none;
+  user-select: none;
+}
+
+.game-timer.low {
+  color: var(--danger-bright);
+  animation: pager-blink 1s steps(2, start) infinite;
+}
+
+.game-timer.timeup {
+  color: var(--danger-bright);
+  animation: shake 0.4s ease infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game-timer.low, .game-timer.timeup { animation: none !important; }
 }
 
 .choice-feedback {
-  min-height: 20px;
-  font-size: 13px;
-  color: var(--ink-dim);
-  margin-top: 4px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 1200;
+  transform: translate(-50%, -50%);
+  max-width: min(86vw, 420px);
+  background: rgba(10,4,4,0.92);
+  border: 1.5px solid var(--border-faint);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.55), 0 0 30px rgba(154,20,20,0.25);
+  padding: 18px 22px;
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--ink);
   text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.choice-feedback.show {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .choice-feedback { transition: none !important; }
 }
 
 /* 실패 페이지 (7p) */
