@@ -9,13 +9,13 @@
 <body>
   <main class="stage">
     <span class="chapter-tag">CHAPTER 2</span>
-    <p class="story">겨우 도착한 곳에는 '폐가'라는 말이 딱 어울리는 집 한 채가 서 있다. 아무래도 들어가야 할 것 같다.</p>
+    <p class="story">겨우 도착한 곳에는 '폐가'라는 말이 딱 어울리는 집 한 채가 서 있다.<br>들어가기 전 <strong>주의사항</strong>을 잘 읽어보고 마음을 단단히 먹자.</p>
 
-    <div class="art-slot" style="min-height:0; aspect-ratio: 800 / 500; max-width: 600px; margin-left:auto; margin-right:auto;">
+    <div class="art-slot photo-flicker" style="min-height:0; aspect-ratio: 800 / 500; max-width: 600px; margin-left:auto; margin-right:auto;">
       <img src="../assets/img/haunted-house.jpg" alt="폐가 전경" />
     </div>
 
-    <p class="story" style="margin-bottom:10px;">폐가에 들어가기 전, 화면의 이미지를 3번 클릭한 후 아래 방법으로 시야를 1인칭으로 전환하세요.</p>
+    <p class="story" style="margin-bottom:10px;">아래 방법으로 시야를 1인칭으로 전환하세요.</p>
 
     <div class="key-guide">
       <div class="key-cap">
@@ -24,25 +24,39 @@
       </div>
       <div class="key-cap">
         <kbd>Home</kbd>
-        <span>1인칭 시점으로 전환합니다</span>
+        <span>1인칭으로 전환하세요.</span>
       </div>
     </div>
+    
+    <div class="mission-banner">
+      <span class="mission-title">주의사항</span>
+    </div>
+    <p class="story">1. 지하 미로 끝에 있는 누군가의 <strong>일기장</strong>에 흔적을 남기세요.<br>2. 정숙하세요. 폐가 내에서 이동할 때에는 오로지 <strong>걸어서</strong> 움직여야 합니다.<br>3. 일기장 작성 시에만 한시적으로 HUD 활성화가 가능합니다.<br></p>
 
-    <!-- <p class="story">미로 끝에 도착하자 오래된 일기장 한 권이 놓여 있다. '김교자'와 '이딤섬'이라는 두 사람이 남긴 메시지인데, 내용이 어딘가 수상하다.</p>
-
-    <p class="story">찜찜한 기분이 들었지만 통장에 꽂힐 100억 길을 생각하며 방명록에 메시지를 남긴 뒤, 다시 미로를 빠져나와 1층으로 올라왔다.
-집안을 다시 찬찬히 살펴보던 그때, 관찰력이 좋은 당신은 <strong>현관문</strong> 밑에 삐죽 튀어나와 있는 편지 한 통을 발견한다.
-
-<strong>[제 친구들 좀 구해 주세요!]</strong></p> -->
 
     <form class="answer-form" id="quiz2-form">
-      <!-- <label for="quiz2-input">제 편지를 발견하셨나요?</label> -->
+      <label for="quiz2-input">일기장 왼쪽에 놓인 물건은?</label>
       <div class="answer-row">
-        <input type="text" id="quiz2-input" placeholder="정답을 알파벳으로 입력하세요" autocomplete="off" />
+        <input type="text" id="quiz2-input" placeholder="정답을 입력하세요" autocomplete="off" />
         <button type="submit">입력</button>
       </div>
       <div class="error-msg" id="quiz2-error"></div>
     </form>
+
+    <div id="quiz2-reveal" style="display:none;">
+      <p class="story">별 거 없네.</p>
+      <p class="story">일기장에 성공적으로 흔적을 남겼다.<br>그, 김교자랑 이딤섬이었던가? 일기장에 남겨놓은 메시지들이 많이 찜찜하긴 하지만 그게 대수냐.<br>100억 길이 바로 코앞에 있다. 왔던 길을 돌아 다시 1층으로 올라가자.</p>
+      <p class="story">1층에 올라오니 무언가 수상한 게 눈에 띈다.</p>
+
+      <form class="answer-form" id="quiz2b-form">
+        <label for="quiz2b-input">수상한 물건은 어디 있었나요?</label>
+        <div class="answer-row">
+          <input type="text" id="quiz2b-input" placeholder="정답을 입력하세요" autocomplete="off" />
+          <button type="submit">입력</button>
+        </div>
+        <div class="error-msg" id="quiz2b-error"></div>
+      </form>
+    </div>
   </main>
 
   <p class="brand-footer">만두의 여름 휴가 · 모그리 따끈따끈 <<만두>></p>
@@ -53,7 +67,20 @@
       formId: "quiz2-form",
       inputId: "quiz2-input",
       errorId: "quiz2-error",
-      answers: ["door"],
+      answers: ["모래시계"],
+      failUrl: "../fail/",
+      onSuccess: function () {
+        var reveal = document.getElementById("quiz2-reveal");
+        reveal.style.display = "block";
+        reveal.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+
+    initAnswerForm({
+      formId: "quiz2b-form",
+      inputId: "quiz2b-input",
+      errorId: "quiz2b-error",
+      answers: ["문", "문틈", "현관문", "현관", "문아래", "현관문아래", "문 아래", "현관문 아래", "현관 아래"],
       nextUrl: "../door/",
       failUrl: "../fail/"
     });

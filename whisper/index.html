@@ -11,7 +11,7 @@
     <span class="chapter-tag">CHAPTER 7</span>
     <!-- <h1 class="title">사튀아 습지, 저주의 목소리</h1> -->
 
-    <p class="story">목적지에 도달하자 누군가 음산한 목소리로 저주의 주문을 외우고 있다.<br>조금만 지체했다가는 모두의 영혼이 보주 안에 가두어질지 모른다.<br><br>저주를 멈출 방법을 찾아야 한다. 과연 그를 멈추게 할 수 있을까?<br><br>신중하게 선택하자.</p>
+    <p class="story">목적지에 도달하자 누군가 음산한 목소리로 저주의 주문을 외우고 있다.<br>조금만 지체했다가는 모두의 영혼이 보주 안에 가두어질지 모른다.<br><br>저주를 멈출 방법을 찾아야 한다. 과연 그를 멈추게 할 수 있을까?<br><br><strong>신중하게 선택하자.</strong></p>
 
     <!-- <div class="art-slot" style="min-height:160px;">
       <span class="slot-label">[ 주술사 / 영혼의 보주 이미지 자리 ]</span>
@@ -36,7 +36,7 @@
             <span class="tarot-numeral">Ⅱ</span>
           </div>
           <div class="tarot-face tarot-front">
-            <span class="tarot-text">백마도사 소울 크리스탈을 이용하여 보주를 향해 정화 마법을 시전한다.</span>
+            <span class="tarot-text">백마도사 소울 크리스탈을<br>이용하여 보주를 향해<br>정화 마법을 시전한다.</span>
             <span class="tarot-confirm-hint">다시 눌러 대답하기</span>
           </div>
         </div>
@@ -47,7 +47,7 @@
             <span class="tarot-numeral">Ⅲ</span>
           </div>
           <div class="tarot-face tarot-front">
-            <span class="tarot-text">내면에 숨어있던<br>연기력을 활용한다.<br>"저는 모르는 일입니다.<br>그저 지나가던 나그네입니다···."</span>
+            <span class="tarot-text">어설프게 끼어들었다가는<br>나까지 잘못될 것 같다.<br>내면에 숨어있던<br>연기력을 활용한다.<br>"지나가겠습니다···."</span>
             <span class="tarot-confirm-hint">다시 눌러 대답하기</span>
           </div>
         </div>
@@ -93,11 +93,18 @@
     </div>
   </div>
 
+  <div class="end-overlay" id="whisper-overlay">
+    <div class="end-overlay-inner">
+      <p class="end-overlay-text whisper-overlay-text">그렇게까지 한다니 하는 수 없지.<br>네 정성을 봐서 이번 한 번 만큼은 특별히 봐주마.</p>
+    </div>
+  </div>
+
   <p class="brand-footer">만두의 여름 휴가 · 모그리 따끈따끈 <<만두>></p>
 
   <!-- Attack on London - C.K.Martin -->
   <audio id="bgm" src="../assets/sound/bgm7.mp3" loop preload="auto"></audio>
   <audio id="bgm-tarot" src="../assets/sound/bgmtarot.mp3" loop preload="auto"></audio>
+  <audio id="laugh-sfx" src="../assets/sound/laugh.mp3" preload="auto"></audio>
 
   <button id="bgm-toggle" aria-label="배경음악 켜기/끄기" title="배경음악 켜기/끄기"
     style="position:fixed; right:16px; bottom:16px; z-index:999; width:44px; height:44px;
@@ -168,6 +175,8 @@
     const feedback = document.getElementById("choice-feedback");
     const bgmMain = document.getElementById("bgm");
     const bgmTarot = document.getElementById("bgm-tarot");
+    const laughSfx = document.getElementById("laugh-sfx");
+    laughSfx.volume = 0.1;
     let gameLocked = false;
     let burnedCount = 0;
     let feedbackTimer = null;
@@ -227,11 +236,45 @@
         return;
       }
 
+      if (card === sealed && !card.classList.contains("confirming-final")) {
+        card.classList.add("confirming-final");
+        card.classList.remove("tremble");
+        void card.offsetWidth;
+        card.classList.add("tremble");
+        card.addEventListener("animationend", () => card.classList.remove("tremble"), { once: true });
+        const hint = card.querySelector(".tarot-confirm-hint");
+        if (hint) hint.textContent = "정말?";
+        return;
+      }
+
+      if (card === sealed && !card.classList.contains("confirming-final-2")) {
+        card.classList.add("confirming-final-2");
+        card.classList.remove("tremble");
+        void card.offsetWidth;
+        card.classList.add("tremble");
+        card.addEventListener("animationend", () => card.classList.remove("tremble"), { once: true });
+        const hint = card.querySelector(".tarot-confirm-hint");
+        if (hint) hint.textContent = "진짜로?";
+        return;
+      }
+
       const correct = card.dataset.correct === "true";
 
       if (correct) {
         gameLocked = true;
-        window.location.href = "../ending/";
+        document.getElementById("whisper-overlay").classList.add("show");
+
+        fadeAudio(bgmTarot, 0, 800);
+
+        laughSfx.currentTime = 0;
+        laughSfx.play().catch((err) => console.error("[SFX] laugh 재생 실패:", err));
+        setTimeout(() => {
+          laughSfx.pause();
+        }, 4000);
+
+        setTimeout(() => {
+          window.location.href = "../ending/";
+        }, 5000);
       } else {
         card.classList.add("burnt");
         showFeedback(failLines[Math.floor(Math.random() * failLines.length)]);

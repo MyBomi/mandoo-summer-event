@@ -13,6 +13,8 @@
  * @param {string}   [opts.failUrl]    오답일 때 이동할 경로 (기본: "../fail/")
  * @param {number}   [opts.failAfterTries]  이 횟수 이상 틀리면 실패 페이지로 이동
  *                                          (기본: 1 = 한 번 틀리면 바로 오답 페이지로 이동)
+ * @param {Function} [opts.onSuccess]  정답일 때 nextUrl 이동 대신 실행할 콜백
+ *                                          (같은 페이지 안에서 다음 단계를 보여줄 때 사용)
  */
 function initAnswerForm(opts) {
   const form = document.getElementById(opts.formId);
@@ -49,7 +51,11 @@ function initAnswerForm(opts) {
       errorEl.classList.remove("show");
       input.style.borderColor = "var(--success)";
       setTimeout(() => {
-        window.location.href = opts.nextUrl;
+        if (typeof opts.onSuccess === "function") {
+          opts.onSuccess();
+        } else {
+          window.location.href = opts.nextUrl;
+        }
       }, 350);
     } else {
       tries++;

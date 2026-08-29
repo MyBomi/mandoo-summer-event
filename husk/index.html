@@ -9,10 +9,14 @@
 <body>
   <main class="stage">
     <span class="chapter-tag">CHAPTER 6</span>
-    <p class="story">희미한 음악이 들려온다. 앞에서 받은 힌트와 함께 들리는 음악 소리를 따라가보자.</p>
+    <p class="story"><strong>'The Husk'?</strong> 그게 어디지?<br>희미한 음악이 들려온다. 앞에서 받은 힌트와 함께 들리는 음악 소리를 따라가보자.</p>
 
+    <div class="hint-box" id="help-hints" style="display:none;">
+      <b>힌트</b>
+      <div id="help-hint-list"></div>
+    </div>
 
-    <form class="answer-form" id="quiz2-form">
+    <form class="answer-form" id="quiz2-form" style="margin-top: 24px;">
       <div class="coord-row">
         <div class="coord-group">
           <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" class="coord-input" id="quiz2-x1" autocomplete="off" />
@@ -151,6 +155,27 @@
     });
 
     tryPlay();
+  })();
+  </script>
+
+  <script>
+  (function () {
+    const helpHints = [
+      "해가 지면 들을 수 있는 노래였던 것 같아.",
+      "익숙한 멜로디가 들리는 것 같아...... ㄹㅎ ㄱㄹㅁㅇ ㅋㄹ",
+      "라케티카 대삼림인가?"
+    ];
+    const helpHintBox = document.getElementById("help-hints");
+    const helpHintList = document.getElementById("help-hint-list");
+    helpHints.forEach((text, idx) => {
+      setTimeout(() => {
+        helpHintBox.style.display = "block";
+        const p = document.createElement("p");
+        p.style.margin = idx === 0 ? "6px 0 0" : "8px 0 0";
+        p.textContent = text;
+        helpHintList.appendChild(p);
+      }, (idx + 1) * 90 * 1000);
+    });
   })();
   </script>
 

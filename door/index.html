@@ -153,14 +153,30 @@
   <script>
     // 채팅 메시지 순차 출력 연출
     const messages = [
-      { who: "them", name: "최만두", text: "제 친구들 좀 구해 주세요… 며칠 전 폐가 체험을 하러 갔었는데, 저희 셋 다 무사히 탈출했었어요." },
-      { who: "them", name: "최만두", text: "근데 그 뒤로 이상한 일이 벌어졌어요. 두 친구가 감쪽같이 사라졌어요." },
-      { who: "them", name: "최만두", text: "더 이상한 건, 아무도 그들을 기억하지 못한다는 거예요. 훈련생들도, 가족들마저도요." },
-      { who: "me", name: "나", text: "폐가에 들어갔기 때문이라면 당신도 잊혀야 했을 텐데… 왜 당신만 멀쩡한 거죠?" },
-      { who: "them", name: "최만두", text: "한 가지 짚이는 데가 있긴 해요. 애들은 지하에 내려갔었고, 저는 무서운 걸 싫어해서 1층에만 있었거든요." },
-      { who: "them", name: "최만두", text: "그래도 걔네 금방 올라왔어요. 진짜 별일 없었다고요. 아, 근데 평소보다 표정이 좀 어두웠던 것 같기도 해요." },
-      { who: "them", name: "최만두", text: "이런 거 하고 나면 재밌다고 펄쩍펄쩍 뛰던 애들인데, 어땠냐고 물어봐도 대답을 안 하더라고요. 혹시 그때부터 문제였던 걸까요?" },
-      { who: "them", name: "최만두", text: "이건 애들을 찾으러 다시 폐가에 들어갔을 때, 지하 계단에서 주웠던 거예요. 단서가 될 수 있을까요?" },
+      { who: "them", name: "최만두", text: "방금 거기서 나오셨죠?" },
+      { who: "me", name: "나", text: "......네." },
+      { who: "them", name: "최만두", text: "다른 게 아니라, 제 친구들 좀 구해주세요!" },
+      { who: "me", name: "나", text: "......네?" },
+      { who: "them", name: "최만두", text: "며칠 전에 폐가 체험을 하고 나서, 같이 갔던 두 녀석이 사라졌어요. 흔적도 없이 감쪽같이요." },
+      { who: "them", name: "최만두", text: "정말 이상해서 그 뒤로 계속 여기로 들어가는 사람들을 지켜보고 있었어요. 그러다 당신이 나타난 거죠!" },
+      { who: "them", name: "최만두", text: "분명 그날 밤, 저희 셋 다 무사히 빠져나왔다고 생각했는데 도대체 어떻게 된 일인지 영문을 모르겠어요." },
+      { who: "them", name: "최만두", text: "아무도 그 애들을 기억하지 못한다는 게 말이 되나요? 훈련생들도, 가족들도 전부 잊었다니까요?" },
+      { who: "choice", options: [
+        "폐가에 들어간 게 문제라면 당신도 함께 사라지거나, 그들을 잊어야 했을 텐데요. 왜 당신만 멀쩡한 거죠?",
+        "셋이 다 같이 있었을 텐데 당신만 무사하다는 게 이상하네요. 혹시 행동이 달랐던 부분이 있어요?"
+      ] },
+      { who: "them", name: "최만두", text: "한 가지 다른 점이 있긴 했어요. 애들은 지하까지 내려갔었고, 저는 무서운 걸 싫어해서 1층에만 있었거든요." },
+      { who: "them", name: "최만두", text: "그래도 걔네 금방 올라왔어요. 진짜 별 일 없었다고요." },
+      { who: "them", name: "최만두", text: "아, 근데 평소보다 표정이 좀 어두웠던 것 같기도 해요." },
+      { who: "them", name: "최만두", text: "이런 거 하고 나면 재밌다고 귀가 아프게 떠들던 애들인데, 어땠냐고 물어봐도 통 대답을 안하더라고요." },
+      { who: "them", name: "최만두", text: "그때부터가 시작이었던 걸까요?" },
+      { who: "choice", options: [
+        "당시의 상황 말고 따로 짚이는 데는 없나요?",
+        "그것 말고 뭔가 챙겨온 물건이나 이상한 점은 없었어요?"
+      ] },
+      { who: "them", name: "최만두", text: "아이고야. 내 정신 좀 봐!" },
+      { who: "them", name: "최만두", text: "이건 애들을 찾으러 다시 폐가에 들어갔을 때, 지하로 통하던 계단에서 주운 거예요." },
+      { who: "them", name: "최만두", text: "더 아래까지는 차마 못 내려갔지만....... 단서가 될 수 있을까요?" },
     ];
 
     const log = document.getElementById("chat-log");
@@ -206,12 +222,44 @@
       typingSfxTimer = setTimeout(() => typingSfx.pause(), 2000);
     }
 
+    function appendMeBubble(text) {
+      const bubble = document.createElement("div");
+      bubble.className = "chat-bubble me";
+      bubble.innerHTML = `<span class="chat-name">나</span>${text}`;
+      log.appendChild(bubble);
+      playTypingSfx();
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }
+
+    function showChoices(options) {
+      const wrap = document.createElement("div");
+      wrap.className = "chat-choices";
+      options.forEach((text) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "chat-choice-btn";
+        btn.textContent = text;
+        btn.addEventListener("click", () => {
+          wrap.remove();
+          appendMeBubble(text);
+          setTimeout(showNext, 3000);
+        });
+        wrap.appendChild(btn);
+      });
+      log.appendChild(wrap);
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }
+
     function showNext() {
       if (i >= messages.length) {
         document.getElementById("chat-continue").style.display = "block";
         return;
       }
       const m = messages[i++];
+      if (m.who === "choice") {
+        showChoices(m.options);
+        return;
+      }
       const bubble = document.createElement("div");
       bubble.className = "chat-bubble " + (m.who === "me" ? "me" : "them");
       bubble.innerHTML = `<span class="chat-name">${m.name}</span>${m.text}`;
@@ -221,7 +269,7 @@
       setTimeout(showNext, 3000);
     }
 
-    setTimeout(showNext, 20000);
+    setTimeout(showNext, 10000);
 
     document.getElementById("continue-btn").addEventListener("click", () => {
       window.location.href = "../puzzle/";

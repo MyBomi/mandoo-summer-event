@@ -26,7 +26,7 @@
     </div>
 
     <div class="npc-reveal" id="npc-reveal">
-      <p class="story" style="text-align:center;">안개가 걷히자, 로브를 쓴 인물의 형상이 또렷해진다. <br/> 이 사람도 폐가에 갇혔던 피해자인 듯 하다.</p>
+      <p class="story" style="text-align:center;">지도에 표시된 곳에 도착하니, 로브를 쓴 인물의 형상이 또렷해진다. <br/> 이 사람도 폐가에 갇혔던 피해자인 듯 하다.</p>
       <div class="npc-figure" id="npc-figure" title="말을 건다">🕯️</div>
       <p class="dim" style="font-size:13px;">그의 관심을 끌 방법이 있을까?</p>
     </div>
@@ -74,7 +74,7 @@
   var btn = document.getElementById('bgm-toggle');
   var userPaused = false;
 
-  audio.volume = 0.20; // 볼륨 50% (0.0 ~ 1.0 사이로 조절 가능)
+  audio.volume = 0.10; // 볼륨 50% (0.0 ~ 1.0 사이로 조절 가능)
 
   // 아이콘은 "내가 껐다/켰다" 여부가 아니라 실제 audio 상태를 그대로 따라가게 함
   audio.addEventListener('play',  function () { btn.textContent = '🔈'; });
@@ -127,8 +127,8 @@
 
   <script src="../assets/answer.js"></script>
   <script>
-    /* ===== 4x4 슬라이드 퍼즐 (숫자 타일 버전, 이미지 있으면 CSS로 교체 가능) ===== */
-    const SIZE = 4;
+    /* ===== 3x3 슬라이드 퍼즐 (숫자 타일 버전, 이미지 있으면 CSS로 교체 가능) ===== */
+    const SIZE = 3;
     const board = document.getElementById("puzzle-board");
     const statusEl = document.getElementById("puzzle-status");
     let tiles = [];       // 현재 배치된 값 (0 = 빈칸)
@@ -183,6 +183,8 @@
     }
 
     function render() {
+      board.style.gridTemplateColumns = `repeat(${SIZE}, 1fr)`;
+      board.style.gridTemplateRows = `repeat(${SIZE}, 1fr)`;
       board.innerHTML = "";
       tiles.forEach((val, idx) => {
         const cell = document.createElement("div");
@@ -196,6 +198,7 @@
             const col = originalIdx % SIZE;
             const row = Math.floor(originalIdx / SIZE);
             cell.style.setProperty("--tile-img", `url(${TILE_IMAGE})`);
+            cell.style.setProperty("--tile-bg-size", `${SIZE * 100}%`);
             cell.style.setProperty("--bx", `${(col / (SIZE - 1)) * 100}%`);
             cell.style.setProperty("--by", `${(row / (SIZE - 1)) * 100}%`);
             cell.textContent = "";
