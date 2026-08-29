@@ -5,8 +5,8 @@
    ============================================================ */
 (function () {
   var START_KEY = "mandoo_timer_start";
-  var DURATION_MS = 60 * 60 * 1000; // 1시간
-
+  var DURATION_MS = 60 * 90 * 1000; // 1시간 30분
+  
   var start = Number(localStorage.getItem(START_KEY));
   if (!start) {
     start = Date.now();
