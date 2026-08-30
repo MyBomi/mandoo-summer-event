@@ -54,40 +54,30 @@
       bgm2.volume = 0.2;
 
       btn.addEventListener('click', function () {
-        if (!connected) {
-          connected = true;
-          btn.classList.add('connected');
-          caption.textContent = '연결 중...';
+        if (connected) return;
 
-          bgm2.play().catch(function (err) {
+        connected = true;
+        btn.classList.add('connected');
+        caption.textContent = '연결 중...';
+
+        bgm2.play().catch(function (err) {
+          console.error('[BGM] 재생 실패:', err);
+          caption.textContent = '재생할 수 없습니다 (콘솔 확인)';
+        });
+
+        bgm1Timer = setTimeout(function () {
+          bgm1.play().catch(function (err) {
             console.error('[BGM] 재생 실패:', err);
-            caption.textContent = '재생할 수 없습니다 (콘솔 확인)';
           });
+        }, 10000);
 
-          bgm1Timer = setTimeout(function () {
-            bgm1.play().catch(function (err) {
-              console.error('[BGM] 재생 실패:', err);
-            });
-          }, 10000);
+        // setTimeout(function () {
+        //   if (connected) caption.textContent = '통화가 연결되었습니다.';
+        // }, 1200);
 
-          // setTimeout(function () {
-          //   if (connected) caption.textContent = '통화가 연결되었습니다.';
-          // }, 1200);
-
-          endOverlayTimer = setTimeout(function () {
-            overlay.classList.add('show');
-          }, 30000);
-        } else {
-          connected = false;
-          btn.classList.remove('connected');
-          clearTimeout(bgm1Timer);
-          clearTimeout(endOverlayTimer);
-          bgm1.pause();
-          bgm2.pause();
-          bgm1.currentTime = 0;
-          bgm2.currentTime = 0;
-          caption.textContent = '눌러서 재발신';
-        }
+        endOverlayTimer = setTimeout(function () {
+          overlay.classList.add('show');
+        }, 25000);
       });
     })();
   </script>

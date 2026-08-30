@@ -200,7 +200,7 @@
     function crossfadeToTarotBgm() {
       bgmTarot.volume = 0;
       bgmTarot.play().catch((err) => console.error("[BGM] bgmtarot 재생 실패:", err));
-      fadeAudio(bgmTarot, 0.2, 800);
+      fadeAudio(bgmTarot, 0.1, 800);
       fadeAudio(bgmMain, 0, 800);
     }
 
